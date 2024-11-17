@@ -1,6 +1,9 @@
 package com.CollegeUnify.project.Application.Application_Model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+
+import com.CollegeUnify.project.TaskManagement.Task;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -41,6 +45,10 @@ private String password;
         name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(
             name = "role_id", referencedColumnName = "id"))
+
+@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+private Collection<Task> tasks = new ArrayList<>();
+//ONETOMANY TO HERE IS ALL FROM RECENT COMMIT, IF ISSUES ARE CAUSED DELETE
 
 private Collection<Role> roles;
 
@@ -108,5 +116,14 @@ private Collection<Role> roles;
     public Collection<Role> getRoles(){
         return roles;
     }
+
+    public void setTasks(Collection<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Collection<Task> getTasks() {
+        return tasks;
+    }
+    //SET AND GET TASKS METHODS ARE ADDED IN MOST RECENT COMMIT PLEASE DELETE IF CAUSES ISSUES
     
 }
