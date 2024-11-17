@@ -1,4 +1,4 @@
-package com.CollegeUnify.project.Application_Model;
+package com.CollegeUnify.project.Application.Application_Model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.CollegeUnify.project.Application_Config;
+package com.CollegeUnify.project.Application.Application_Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.CollegeUnify.project.Application_Service.UserService;
+import com.CollegeUnify.project.Application.Application_Service.UserService;
 
 //DON'T CHANGE ANYTHING HERE UNLESS YOU HAVE A REASON TO, THIS CODE CONFIGURES SECURITY SETTINGS
 

@@ -1,4 +1,4 @@
-package com.CollegeUnify.project.Application_Web;
+package com.CollegeUnify.project.Application.Application_Web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.CollegeUnify.project.Application_Service.UserService;
-import com.CollegeUnify.project.Application_Web_Dto.UserRegistrationDto;
+import com.CollegeUnify.project.Application.Application_Service.UserService;
+import com.CollegeUnify.project.Application.Application_Web_Dto.UserRegistrationDto;
 
 //THIS CODE CONTROLS REGISTRATION PAGES
 

@@ -1,4 +1,4 @@
-package com.CollegeUnify.project.Application_Service;
+package com.CollegeUnify.project.Application.Application_Service;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,10 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.CollegeUnify.project.Application_Model.User;
-import com.CollegeUnify.project.Application_Model.Role;
-import com.CollegeUnify.project.Application_Repository.UserRepository;
-import com.CollegeUnify.project.Application_Web_Dto.UserRegistrationDto;
+import com.CollegeUnify.project.Application.Application_Model.User;
+import com.CollegeUnify.project.Application.Application_Model.Role;
+import com.CollegeUnify.project.Application.Application_Repository.UserRepository;
+import com.CollegeUnify.project.Application.Application_Web_Dto.UserRegistrationDto;
 
 @Service
 public class UserServiceImpl implements UserService{

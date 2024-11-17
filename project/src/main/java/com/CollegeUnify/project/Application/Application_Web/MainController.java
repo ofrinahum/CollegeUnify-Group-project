@@ -1,4 +1,4 @@
-package com.CollegeUnify.project.Application_Web;
+package com.CollegeUnify.project.Application.Application_Web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

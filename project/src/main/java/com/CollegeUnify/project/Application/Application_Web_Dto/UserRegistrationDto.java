@@ -1,4 +1,4 @@
-package com.CollegeUnify.project.Application_Web_Dto;
+package com.CollegeUnify.project.Application.Application_Web_Dto;
 
 public class UserRegistrationDto {
     
