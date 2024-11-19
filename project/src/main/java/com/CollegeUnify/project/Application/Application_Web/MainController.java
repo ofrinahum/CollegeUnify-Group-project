@@ -15,6 +15,6 @@ public class MainController {
 
     @GetMapping("/")
     public String home(){
-        return "index";
+        return "unauth_homepage";
     }
 }

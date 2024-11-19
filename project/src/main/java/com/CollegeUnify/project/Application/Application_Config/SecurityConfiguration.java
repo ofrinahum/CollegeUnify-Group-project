@@ -50,12 +50,11 @@ public class SecurityConfiguration{
                 .requestMatchers("/js/**").permitAll()
                 .requestMatchers("/css/**").permitAll()
                 .requestMatchers("/img/**").permitAll()
-                .requestMatchers("/").authenticated()
                 .anyRequest().authenticated()
                 )
             .formLogin((form) -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true) // Redirect after successful login
+                .loginPage("/")
+                //.defaultSuccessUrl("/", true) // Redirect after successful login
                 .permitAll())
             .logout((logout) -> logout
                 .invalidateHttpSession(true)
