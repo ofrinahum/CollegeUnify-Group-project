@@ -49,7 +49,8 @@ public class SecurityConfiguration{
                 .requestMatchers("/registration**").permitAll()
                 .requestMatchers("/js/**").permitAll()
                 .requestMatchers("/css/**").permitAll()
-                .requestMatchers("/img/**").permitAll()
+                .requestMatchers("/img/**").permitAll() // Allow /img/** for images
+                .requestMatchers("/images/**").permitAll() // Add this line
                 .anyRequest().authenticated()
                 )
             .formLogin((form) -> form

@@ -2,6 +2,8 @@ package com.CollegeUnify.project.Application.Application_Web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 //THIS CODE CONTROLS MAIN PAGES
 
@@ -13,7 +15,7 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/")
+    @RequestMapping("/")
     public String home(){
         return "unauth_homepage";
     }
