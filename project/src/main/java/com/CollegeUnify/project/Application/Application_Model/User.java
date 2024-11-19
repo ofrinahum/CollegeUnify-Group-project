@@ -3,7 +3,7 @@ package com.CollegeUnify.project.Application.Application_Model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.CollegeUnify.project.TaskManagement.Task;
+import com.CollegeUnify.project.TaskManagement.Task_Model.Task;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -46,11 +46,12 @@ private String password;
         inverseJoinColumns = @JoinColumn(
             name = "role_id", referencedColumnName = "id"))
 
+private Collection<Role> roles;
+
 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+
 private Collection<Task> tasks = new ArrayList<>();
 //ONETOMANY TO HERE IS ALL FROM RECENT COMMIT, IF ISSUES ARE CAUSED DELETE
-
-private Collection<Role> roles;
 
     //DEFAULT CONSTRUCTOR
     public User(){

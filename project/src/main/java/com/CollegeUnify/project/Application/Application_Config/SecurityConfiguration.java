@@ -45,19 +45,22 @@ public class SecurityConfiguration{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
             .authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/tasks/**").permitAll()
                 .requestMatchers("/registration**").permitAll()
                 .requestMatchers("/js/**").permitAll()
                 .requestMatchers("/css/**").permitAll()
                 .requestMatchers("/img/**").permitAll()
+                .requestMatchers("/").authenticated()
                 .anyRequest().authenticated()
                 )
             .formLogin((form) -> form
                 .loginPage("/login")
+                .defaultSuccessUrl("/", true) // Redirect after successful login
                 .permitAll())
             .logout((logout) -> logout
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                 .logoutSuccessUrl("/login?logout")
                 .permitAll());
 
