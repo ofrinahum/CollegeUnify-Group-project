@@ -45,23 +45,26 @@ public class SecurityConfiguration{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/tasks/**").permitAll()
+                .requestMatchers("/tasks/**").authenticated()
                 .requestMatchers("/registration**").permitAll()
+                .requestMatchers("/login/**").permitAll()
                 .requestMatchers("/js/**").permitAll()
                 .requestMatchers("/css/**").permitAll()
                 .requestMatchers("/img/**").permitAll() // Allow /img/** for images
                 .requestMatchers("/images/**").permitAll() // Add this line
+                .requestMatchers("/dashboard/**").authenticated()
+                .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 )
             .formLogin((form) -> form
-                .loginPage("/")
-                //.defaultSuccessUrl("/", true) // Redirect after successful login
+                .loginPage("/login")
+                .defaultSuccessUrl("/dashboard", true) // Redirect after successful login
                 .permitAll())
             .logout((logout) -> logout
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/")
                 .permitAll());
 
                 return http.build();

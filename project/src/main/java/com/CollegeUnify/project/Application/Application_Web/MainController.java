@@ -19,4 +19,9 @@ public class MainController {
     public String home(){
         return "unauth_homepage";
     }
+
+    @RequestMapping("/dashboard")
+    public String dashboard(){
+        return "dashboard";
+    }
 }

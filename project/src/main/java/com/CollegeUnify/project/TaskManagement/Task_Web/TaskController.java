@@ -40,4 +40,24 @@ public class TaskController {
     return "task_management"; // Return the task management page
 }
 
+    @PostMapping("/add")
+    public String addTask(@ModelAttribute Task task, Principal principal) {
+    String username = principal.getName();
+    User user = userRepository.findByEmail(username);
+
+    if (user == null) {
+        throw new IllegalStateException("Authenticated user not found in the database");
+    }
+
+    // Log the received task
+    System.out.println("Received Task: " + task);
+
+    // Set the user and save the task
+    task.setUser(user);
+    taskService.addTask(task, user.getId());
+
+    return "redirect:/tasks";
+}
+
+
 }
