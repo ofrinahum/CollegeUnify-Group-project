@@ -1,87 +1,257 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset = "ISO-8859-1">
-        <title>Registration</title>
-        <link rel = "stylesheet"
-        href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity = "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin = "anonymous">
-    </head>
-    <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        /* Background blur effect */
+        body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-image: url('/images/purpleBackground.png'); /* Add the path to your image */
+        background-size: cover; /* Ensure the background image covers the entire page */
+        background-position: center; /* Center the image */
+        background-repeat: no-repeat; /* Prevent the image from repeating */
+        height: 100vh;
+        /* Remove flexbox styles that center content */
+        display: block; /* Default block-level layout */
+        }
 
-        <!-- navigation bar (header)-->
-         <nav class = "navbar navbar-inverse navbar-fixed-top">
-            <div class = "container">
-                <div class = "navbar-header">
-                    <button type = "button" class = "navbar-toggle collapsed"
-                    data-toggle = "collapse" data-target = "#navbar" aria-expanded = "false"
-                    aria-controls = "navbar">
-                    <span class = "sr-only">Toggle navigation</span> <span
-                    class = "icon-bar"></span><span class = "icon-bar"></span> <span 
-                    class = "idon-bar"></span>
-                </button>
-                <a class = "navbar-brand" href = "#" th:href = "@{/}" > Registration and Login Module </a>
+        /* Common navigation button styles */
+        .nav-button {
+        background-color: transparent;
+        border: none; /* Remove border for all nav buttons */
+        padding: 5px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        color: black;
+        transition: background-color 0.3s, color 0.3s;
+        }
 
-                </div>
+        .nav-button:hover {
+            background-color: #ececec; /* Subtle hover effect for white buttons */
+            z-index: 2;
+        }
+
+        /* Specific styles for Sign In and Register buttons */
+        .nav-button-signin {
+            background-color: #F2F2F7;
+            border: 1px solid black; /* Keep a border for these */
+            z-index: 2;
+        }
+
+        .nav-button-signin:hover {
+            background-color: #d9d9e7;
+            z-index: 2;
+        }
+
+        .nav-button-register {
+            background-color: #F7CDA0;
+            border: 1px solid black; /* Keep a border for these */
+            z-index: 2;
+        }
+
+        .nav-button-register:hover {
+            background-color: #ECB171;
+            z-index: 2;
+        }
+
+        /* Navigation Bar Logo */
+        .navbar-logo {
+            margin-left: -10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        /* Registration Form Overlay */
+        .form-overlay {
+            background-color: rgba(246, 245, 255, 0.4); /* Dark overlay background */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .form-container-wrapper {
+            display: flex;
+            width: 880px; /* 330 + 550 */
+            height: 475px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            width: 330px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-container h1 {
+            margin-bottom: 40px;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            transform: translateX(15px) translateY(-20px);
+        }
+
+        .form-group input {
+            width: 85%;
+            padding: 10px;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            align-items: center;
+            transform: translateX(15px) translateY(-20px);
+        }
+
+        .form-group button {
+            background-color: #F7CDA0;
+            color: black;
+            border: 1px solid black;
+            padding: 12px 15px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 92%;
+            align-items: center;
+            transform: translateX(15px) translateY(0px);
+        }
+
+        .form-group button:hover {
+            background-color: #ECB171;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-footer a {
+            color: #5eacff;
+            font-size: 13px;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .purple-side {
+        background: linear-gradient(125deg, rgba(180, 132, 228, 0.85), rgba(246, 245, 255, 0.9)); /* Diagonal gradient from purple to light purple */
+        width: 550px;
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        padding: 20px;
+        }
+
+
+        .purple-side .black-line {
+        width: 450px; /* Same width as the image */
+        height: 2px;  /* Thickness of the line */
+        background-color: black; /* Black color for the line */
+        margin-top: 10px; /* Adds space between the image and the line */
+        }
+        
+        .purple-side .header{
+        text-align: center;
+        margin-top: 10px;
+        font-size: 19px;
+        font-family: Arial, sans-serif;
+        color: black;
+        }
+
+    </style>
+</head>
+<body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
+    <!-- Navigation Bar -->
+    <div style="background-color: white; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 50px; z-index: 2;">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;  z-index: 2;">
+            <!-- Logo (Now as a Button) -->
+            <a href="/" class="navbar-logo">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px; z-index: 2;">
+            </a>
+    
+            <!-- Navigation Buttons -->
+            <div style="display: flex; gap: 15px; margin-right: 10px; z-index: 2;">
+                <button onclick="location.href='#pricing'" class="nav-button">Pricing</button>
+                <button onclick="location.href='#resources'" class="nav-button">Resources</button>
+                <button onclick="location.href='#functionality'" class="nav-button">Functionality</button>
+                <button onclick="location.href='#contact'" class="nav-button">Contact</button>
+                <button onclick="location.href='#about'" class="nav-button">About</button>
+                <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
+                <button onclick="location.href='/registration'" class="nav-button nav-button-register">Register</button>
             </div>
-         </nav>
+        </div>
+    </div>
 
-         <br>
-         <br>
-         <br>
-         <br>
-
-         <!-- Create HTML registration form -->
-          <div class = "container">
-            <div class = "row">
-                <div class = "col-md-6 col-md-offset-3">
-
-                    <!-- success message -->
-
-                    <div th:if = "${param.success}">
-                        <div class = "alert alert-info"> You've successfully registered to CollegeUnify!</div>
+    <!-- Registration Form -->
+    <div class="form-overlay">
+        <div class="form-container-wrapper">
+            <div class="form-container">
+                <h1>Create Account</h1>
+                <form action="/registration" method="post">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
                     </div>
-
-                    <h1> Registration </h1>
-
-                    <form th:action = "@{/registration}" method = "post" th:object = "${user}">
-
-                        <div class = "form-group">
-                            <label class = "control-label" for = "firstName">
-                                First Name
-                            </label>
-                            <input id = "firstName" class = "form-control" th:field = "*{firstName}" required autofocus = "autofocus" />
-                        </div>
-
-                        <div class = "form-group">
-                            <label class = "control-label" for = "lastName">
-                                Last Name
-                            </label>
-                            <input id = "lastName" class = "form-control" th:field = "*{lastName}" required autofocus = "autofocus" />
-                        </div>
-
-                        <div class = "form-group">
-                            <label class = "control-label" for = "email">
-                                Email
-                            </label>
-                            <input id = "email" class = "form-control" th:field = "*{email}" required autofocus = "autofocus" />
-                        </div>
-
-                        <div class = "form-group">
-                            <label class = "control-label" for = "password">
-                                Password
-                            </label>
-                            <input id = "password" class = "form-control" type = "password" th:field = "*{password}" required autofocus = "autofocus" />
-                        </div>
-
-                        <div class = "form-group">
-                            <button type = "submit" class = "btn btn-success"> Register </button>
-                            <span> Already registered? <a href = "/" th:href = "@{/login}"> Login here </a></span>
-                        </div>
-                    </form>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Register</button>
+                    </div>
+                </form>
+                <div class="form-footer">
+                    Already registered? <a href="/login">Login here</a>
                 </div>
             </div>
-          </div>
-    </body>
+            <div class="purple-side">
+                <img src="/images/CUNameLogo.png" alt="CUSlogo" style="width: 375px; height: 215px;">
+                <div class="black-line"></div> <!-- New black line div -->
+                <div class="header">You Set the Goals, We Plan the Journey</div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

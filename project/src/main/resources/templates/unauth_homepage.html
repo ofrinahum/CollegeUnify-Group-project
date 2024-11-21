@@ -38,7 +38,7 @@
         /* Style for the buttons */
         .info-box button {
             background-color: #F7CDA0;
-            border: 1px;
+            border: 1px solid black;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
@@ -55,6 +55,7 @@
         .navbar-logo {
             margin-left: -10px;
             cursor: pointer;
+            z-index:2
         }
 
         /* Text Below Rectangle */
@@ -85,18 +86,17 @@
             width: 220px;
             height: 53px;
             cursor: pointer;
-            font-weight: bold;
             margin-top: 30px;
             transition: background-color 0.3s ease-in-out;
         }
 
         .cta-button:hover {
-            background-color: #F6F5FF;
+            background-color: #ECB171;
         }
 
     /* Common navigation button styles */
     /* Common navigation button styles */
-.nav-button {
+    .nav-button {
     background-color: transparent;
     border: none; /* Remove border for all nav buttons */
     padding: 5px 12px;
@@ -105,36 +105,41 @@
     cursor: pointer;
     color: black;
     transition: background-color 0.3s, color 0.3s;
-}
+    z-index:2
+    }
 
-.nav-button:hover {
-    background-color: #ececec; /* Subtle hover effect for white buttons */
-}
+    .nav-button:hover {
+        background-color: #ececec; /* Subtle hover effect for white buttons */
+        z-index:2
+    }
 
-/* Specific styles for Sign In and Register buttons */
-.nav-button-signin {
-    background-color: #F2F2F7;
-    border: 1px solid black; /* Keep a border for these */
-}
+    /* Specific styles for Sign In and Register buttons */
+    .nav-button-signin {
+        background-color: #F2F2F7;
+        border: 1px solid black; /* Keep a border for these */
+    }
 
-.nav-button-signin:hover {
-    background-color: #d9d9e7;
-}
+    .nav-button-signin:hover {
+        background-color: #d9d9e7;
+        z-index:2
+    }
 
-.nav-button-register {
-    background-color: #F7CDA0;
-    border: 1px solid black; /* Keep a border for these */
-}
+    .nav-button-register {
+        background-color: #F7CDA0;
+        border: 1px solid black; /* Keep a border for these */
+        z-index:2
+    }
 
-.nav-button-register:hover {
-    background-color: #ECB171;
-}
+    .nav-button-register:hover {
+        background-color: #ECB171;
+        z-index:2
+    }
 
     </style>
 </head>
 <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
     <!-- Navigation Bar -->
-    <div style="background-color: white; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 50px;">
+    <div style="background-color: white; padding: 10px; height: 50px; z-index: 2">
         <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;">
             <!-- Logo (Now as a Button) -->
             <a href="/" class="navbar-logo">
@@ -142,9 +147,10 @@
             </a>
     
             <!-- Navigation Buttons -->
-            <div style="display: flex; gap: 15px; margin-right: 10px;">
+            <div style="display: flex; gap: 15px; margin-right: 10px; z-index:2">
                 <button onclick="location.href='#pricing'" class="nav-button">Pricing</button>
                 <button onclick="location.href='#resources'" class="nav-button">Resources</button>
+                <button onclick="location.href='#functionality'" class="nav-button">Functionality</button>
                 <button onclick="location.href='#contact'" class="nav-button">Contact</button>
                 <button onclick="location.href='#about'" class="nav-button">About</button>
                 <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
@@ -177,7 +183,7 @@
     </div>
 
     <!-- Text Below Rectangle -->
-    <div style="background-color: white; padding: 40px 20px; height: 50px; width: 100%; text-align: center;">
+    <div style="background-color: white; padding: 40px 20px; height: 45px; width: 100%; text-align: center;">
         <p class="cta-text">
             Whether you're managing a busy schedule or balancing multiple assignments,<br>
             CollegeUnify is here to help you stay organized, reduce stress, and maximize your academic potential. <br>
@@ -185,9 +191,9 @@
         </p>
     </div>
 
-    <div style="background-color: #F6F5FF; height: 498px; width: 100%; position: relative;">
+    <div style="background-color: #F6F5FF; height: 450px; width: 100%; position: relative;">
         <!-- New Section: Group of 3 Texts with Individual Boxes -->
-        <div style="display: flex; justify-content: space-between; max-width: 1440px; margin: 50px auto; padding: 0 20px;">
+        <div style="display: flex; justify-content: space-between; max-width: 1440px; margin: 50px auto; padding: 0 10px; padding-top: 20px;">
             <!-- First Item -->
             <div class="info-box">
                 <h2 style="color: #B484E4; font-size: 24px;">Track Your Assignments and Appointments</h2>
@@ -202,14 +208,14 @@
                 <h2 style="color: #B484E4; font-size: 24px;">Smart Scheduling</h2>
                 <br>
                 <p style="color: black; font-size: 16px; line-height: 1.5;">
-                    Our automatic study schedule adapts to your unique routine. Simply add your class times, work schedule, and priorities, and we’ll create a study plan that fits your life.
+                    Our automatic study schedule adapts to your unique routine. Simply add your class times, personal schedule, and assignments with set priority levels, and we’ll create a study plan that fits your life.
                 </p>
                 <button>Learn More</button>
             </div>
 
             <!-- Third Item -->
             <div class="info-box">
-                <h2 style="color: #B484E4; font-size: 24px;">Campus Resources at Your Fingertips</h2>
+                <h2 style="color: #B484E4; font-size: 24px;">Campus Resources at Your Fingertips (Coming Soon!)</h2>
                 <p style="color: black; font-size: 16px; line-height: 1.5;">
                     Find and book study rooms, view tutoring schedules, and access other institution-specific resources directly from the app. Everything you need to succeed is just a tap away.
                 </p>
