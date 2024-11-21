@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Page</title>
+    <title>Registration | CollegeUnify</title>
     <style>
         /* Background blur effect */
         body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background-image: url('/images/purpleBackground.png'); /* Add the path to your image */
+        background-image: url('/images/registerBackground.png'); /* Add the path to your image */
         background-size: cover; /* Ensure the background image covers the entire page */
         background-position: center; /* Center the image */
         background-repeat: no-repeat; /* Prevent the image from repeating */
         height: 100vh;
+        overflow: hidden;
         /* Remove flexbox styles that center content */
         display: block; /* Default block-level layout */
         }
@@ -67,7 +68,7 @@
 
         /* Registration Form Overlay */
         .form-overlay {
-            background-color: rgba(246, 245, 255, 0.4); /* Dark overlay background */
+            background-color: rgba(246, 245, 255, 0.6); /* Light overlay background */
             position: fixed;
             top: 0;
             left: 0;
@@ -164,7 +165,7 @@
         }
 
         .purple-side {
-        background: linear-gradient(125deg, rgba(180, 132, 228, 0.85), rgba(246, 245, 255, 0.9)); /* Diagonal gradient from purple to light purple */
+        background: linear-gradient(125deg, rgba(180, 132, 228, 0.75), rgba(246, 245, 255, 0.75)); /* Diagonal gradient from purple to light purple */
         width: 550px;
         display: flex;
         flex-direction: column; /* Stack items vertically */
@@ -192,11 +193,27 @@
         color: black;
         }
 
+        .success-banner {
+        position: absolute;
+        top: 70px; /* Right below the navbar */
+        left: 0;
+        width: 100%;
+        background-color: #d4edda; /* Light green for success */
+        color: #155724; /* Dark green text */
+        border: 1px solid #c3e6cb;
+        text-align: center;
+        padding: 10px 15px;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+        z-index: 2; /* Below navbar but above modal */
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 </head>
 <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
     <!-- Navigation Bar -->
-    <div style="background-color: white; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 50px; z-index: 2;">
+    <div style="background-color: white; padding: 10px; position: relative; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 50px; z-index: 2;">
         <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;  z-index: 2;">
             <!-- Logo (Now as a Button) -->
             <a href="/" class="navbar-logo">
@@ -216,12 +233,19 @@
         </div>
     </div>
 
+    <!--Success banner-->
+    <div id="success-banner" style="display: none;" class="success-banner">
+        Registration successful! Welcome to our platform.
+    </div>
+
+
     <!-- Registration Form -->
     <div class="form-overlay">
         <div class="form-container-wrapper">
             <div class="form-container">
                 <h1>Create Account</h1>
-                <form action="/registration" method="post">
+                <form action="/registration" method="POST">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                     <div class="form-group">
                         <label for="firstName">First Name</label>
                         <input type="text" id="firstName" name="firstName" required>
@@ -255,3 +279,13 @@
     </div>
 </body>
 </html>
+
+<script>
+    // Example: Show the success banner when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('success')) { // Check if a "success" parameter exists in the URL
+            document.getElementById('success-banner').style.display = 'block';
+        }
+    });
+</script>
