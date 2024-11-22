@@ -24,4 +24,14 @@ public class MainController {
     public String dashboard(){
         return "dashboard";
     }
+
+    @RequestMapping("/about")
+    public String about(){
+        return "about";
+    }
+
+    @RequestMapping("/features")
+    public String features(){
+        return "about";
+    }
 }
