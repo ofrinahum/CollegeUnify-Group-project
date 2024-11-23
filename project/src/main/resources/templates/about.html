@@ -76,25 +76,12 @@
             background-color: #ECB171;
         }
 
-        /* Gradient Rectangle */
-        .gradient-rectangle {
-            width: 90%;
-            max-width: 1300px;
-            height: 1000px;
-            background: linear-gradient(to bottom, #FFFFFF 40%, #F7CDA0);
-            position: relative;
-            margin: 60px auto; /* Adjust space below the navbar */
-            border-radius: 12px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
-            padding-top: 60px; /* Ensure space for the header text */
-        }
-
-
         /* Rectangle Header */
         .rectangle-header {
             text-align: center;
             color: #543080; /* Dark purple */
             font-size: 28px;
+            margin-top: 30px;
             font-weight: bold;
             font-family: Arial, sans-serif;
             line-height: 1.5;
@@ -159,13 +146,6 @@
             color: #333;
         }
 
-        /* Purple Footer */
-        .purple-footer {
-            background-color: #F2F2F7;
-            height: 50px;
-            margin-top: 20px; /* Add some space between the rectangle and the footer */
-        }
-
         .features-section {
             margin: 60px auto;
             max-width: 1200px;
@@ -221,6 +201,35 @@
         margin: 22.5px 0; /* Adjust this value for the desired amount of space */
      }
 
+        /* Full-Screen Image Section */
+    .image-section {
+        position: relative;
+        width: 100%;
+        height: 350px; /* Full height minus navbar height */
+        overflow: hidden;
+    }
+
+    .image-section img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure the image covers the area while maintaining aspect ratio */
+    }
+
+    /* Header Overlay */
+    .header-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the header */
+        color: #fbf8fe; /* Text color to contrast against the image */
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* Add text shadow for better visibility */
+        z-index: 2; /* Ensure it sits above the image */
+    }
+
+
     </style>
 </head>
 <body>
@@ -242,18 +251,14 @@
         </div>
     </div>
 
-    <!-- Gradient Rectangle -->
-    <div class="gradient-rectangle">
-        <div class="rectangle-header">
+        <!-- Image Section -->
+    <div class="image-section">
+        <div class="header-overlay">
             Built by Students, For Students: CollegeUnify<br>
             Welcome to Your Path Forward!
         </div>
-        <!-- Separate Image and Text -->
-        <div class="content-section">
-            <!-- Image Box -->
-            <div class="image-box">
-                <img src="/images/aboutImage.jpg" alt="About Us">
-            </div>
+        <img src="/images/aboutImage.png" alt="About Us">
+    </div>
             <!-- Text Box -->
             <div class="text-box">
                 <h2>About Us</h2>
@@ -273,9 +278,11 @@
                 </p>
             </div>
         </div>
-        <div class = "rectangle-header2">
-            Curious about how CollegeUnify can simplify your life?<br>
-            Here’s a quick overview of our key features:
+        <div style="background-color: white; padding: 40px 20px; text-align: center; margin: 30px auto;">
+            <h2 class="rectangle-header2">
+                Curious about how CollegeUnify can simplify your life?<br>
+                Here’s a quick overview of our key features:
+            </h2>
         </div>
         <!-- Feature Section -->
 <div class="features-section">
@@ -312,9 +319,6 @@
         </div>
     </div>
 </div>
-    </div>
 
-    <!-- Purple Footer -->
-    <div class="purple-footer"></div>
 </body>
 </html>
