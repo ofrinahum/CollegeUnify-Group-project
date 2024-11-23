@@ -67,7 +67,7 @@
 
         /* Login Form Overlay */
         .form-overlay {
-            background-color: rgba(247, 205, 160, 0.4); /* Light overlay background */
+            background-color: rgba(246, 245, 255, 0.5); /* Light overlay background */
             position: fixed;
             top: 0;
             left: 0;
@@ -89,7 +89,7 @@
         }
 
         .form-container {
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(254, 252, 249, 0.85);
             padding: 20px;
             width: 330px;
             display: flex;
@@ -155,7 +155,7 @@
         }
 
         .purple-side {
-            background: linear-gradient(125deg, rgba(180, 132, 228, 0.75), rgba(246, 245, 255, 0.75));
+            background: linear-gradient(125deg, rgba(180, 132, 228, 0.85), rgba(246, 245, 255, 0.85));
             width: 550px;
             display: flex;
             flex-direction: column;
@@ -189,12 +189,12 @@
             <a href="/" class="navbar-logo">
                 <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
             </a>
-            <div style="display: flex; gap: 15px; margin-right: 10px;">
+            <div style="display: flex; gap: 15px; margin-right: 10px; z-index:2">
                 <button onclick="location.href='#pricing'" class="nav-button">Pricing</button>
                 <button onclick="location.href='#resources'" class="nav-button">Resources</button>
-                <button onclick="location.href='#functionality'" class="nav-button">Functionality</button>
                 <button onclick="location.href='#contact'" class="nav-button">Contact</button>
-                <button onclick="location.href='#about'" class="nav-button">About</button>
+                <button onclick="location.href='/features'" class="nav-button">Features</button>
+                <button onclick="location.href='/about'" class="nav-button">About</button>
                 <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
                 <button onclick="location.href='/registration'" class="nav-button nav-button-register">Register</button>
             </div>

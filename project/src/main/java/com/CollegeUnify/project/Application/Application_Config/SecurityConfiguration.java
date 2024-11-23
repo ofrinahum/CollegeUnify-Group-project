@@ -53,6 +53,8 @@ public class SecurityConfiguration{
                 .requestMatchers("/img/**").permitAll() // Allow /img/** for images
                 .requestMatchers("/images/**").permitAll() // Add this line
                 .requestMatchers("/dashboard/**").authenticated()
+                .requestMatchers("/about/**").permitAll()
+                .requestMatchers("/features/**").permitAll()
                 .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 )
