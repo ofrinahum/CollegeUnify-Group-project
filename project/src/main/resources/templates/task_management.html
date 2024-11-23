@@ -35,8 +35,96 @@
             <div th:if="${task.type == 'personal' or task.type == 'test'}">
                 <p>Event Duration: <span th:text="${task.eventDuration}"></span> minutes</p>
             </div>
+            <!-- Edit Button -->
+            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#taskEdit"
+                th:data-id="${task.id}"
+                th:data-title="${task.title}"
+                th:data-description="${task.description}"
+                th:data-priority="${task.priority}"
+                th:data-type="${task.type}"
+                th:data-due-date="${task.dueDate}"
+                th:data-event-date="${task.eventDateTime}"
+                th:data-event-duration="${task.eventDuration}">
+            Edit
+            </button>
+            <!-- Delete Button -->
+            <button type = "button" class = "btn btn-danger btn-sm" data-toggle = "modal" data-target = "#taskDelete">
+                Delete
+            </button>
         </li>
     </ul>
+
+    <!-- Model for Task Modification -->
+    <div class = "modal fade" id = "taskEdit" tabindex="-1" role = "dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
+        <div class = "modal-dialog" role = "document">
+            <div class = "modal-content">
+                <form id = "taskForm" method = "POST" action = "/tasks/edit">
+                    <!-- Include CSRF Token -->
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    <!-- Header w/ Exit Button -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="taskModalLabel">Edit Task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <!-- Dynamically populate userId from session -->
+                        <input type="hidden" name="userId" th:value="${user.id}">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">Priority</label>
+                            <select class="form-control" id="priority" name="priority" required>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type">Task Type</label>
+                            <select class="form-control" id="type" name="type" onchange="toggleDueDateFields()" required>
+                                <option value="homework">Homework</option>
+                                <option value="project">Project</option>
+                                <option value="test">Test</option>
+                                <option value="personal">Personal</option>
+                            </select>
+                        </div>
+
+                        <!-- Due Date Field -->
+                        <div class="form-group" id="dueDateField">
+                            <label for="dueDate">Due Date</label>
+                            <input type="datetime-local" class="form-control" id="dueDate" name="dueDate">
+                        </div>
+
+                        <!-- Event Date Field (for Test/Personal) -->
+                        <div class="form-group" id="eventDateField" style="display: none;">
+                            <label for="eventDateTime">Event Date/Time</label>
+                            <input type="datetime-local" class="form-control" id="eventDateTime" name="eventDateTime">
+                        </div>
+
+                        <!-- Event Duration Field (for Test/Personal) -->
+                        <div class="form-group" id="eventDurationField" style="display: none;">
+                            <label for="eventDuration">Event Duration (in minutes)</label>
+                            <input type="number" class="form-control" id="eventDuration" name="eventDuration" min="1">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save Task</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal for Task Form -->
     <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
