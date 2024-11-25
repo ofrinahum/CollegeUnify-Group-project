@@ -1,56 +1,73 @@
 package com.CollegeUnify.project.TaskManagement.Task_Service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.CollegeUnify.project.Application.Application_Model.User;
 import com.CollegeUnify.project.Application.Application_Repository.UserRepository;
 import com.CollegeUnify.project.TaskManagement.Task_Mapping.TasksDao;
 import com.CollegeUnify.project.TaskManagement.Task_Model.Task;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TaskService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private TasksDao tasksDao;
 
-    public boolean addTask(Task task, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        task.setUser(user);  // Set the actual User object
-        return tasksDao.addTask(task, userId);
+    // Find all tasks for a specific user
+    public List<Task> findByUserId(Long userId) {
+        return tasksDao.findByUserId(userId);
     }
 
-    // Update an existing task
-    public boolean updateTask(Task task) {
-        return tasksDao.updateTask(task);
+    // Find a specific task by ID
+    public Task findById(Long taskId) {
+        return tasksDao.findById(taskId);
+    }
+
+    // Save a new task
+    public boolean save(Task task, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        task.setUser(user);
+        return tasksDao.save(task, userId);
     }
 
     // Delete a task by ID
-    public boolean deleteTask(int taskId) {
-        return tasksDao.deleteTask(taskId);
-    }
-
-    // Fetch a task by ID
-    public Task getTaskById(int taskId) {
-        return tasksDao.getTaskById(taskId);
+    public boolean deleteById(Long taskId) {
+        return tasksDao.deleteById(taskId);
     }
 
     // Mark a task as completed
-    public boolean completeTask(int taskId) {
-        return tasksDao.completeTask(taskId);
+    public boolean markAsCompleted(Long taskId) {
+        return tasksDao.markAsCompleted(taskId);
     }
 
-    // Fetch all completed tasks
-    public List<Task> getCompletedTasks() {
-        return tasksDao.getCompletedTasks();
-    }
+    // Validate a task before saving
+    public void validateTask(Task task) {
+        String type = task.getType();
 
-    // **New method to get tasks by userId**
-    public List<Task> getTasksByUserId(Long userId) {
-        return tasksDao.findByUserId(userId);  // This assumes your DAO supports this method
+        if ("homework".equalsIgnoreCase(type) || "project".equalsIgnoreCase(type)) {
+            if (task.getDueDate() == null) {
+                throw new IllegalArgumentException("Due date is required for Homework and Project tasks.");
+            }
+        } else if ("personal".equalsIgnoreCase(type) || "test".equalsIgnoreCase(type)) {
+            if (task.getEventDate() == null || task.getStartTime() == null || task.getEndTime() == null) {
+                throw new IllegalArgumentException("Event date, start time, and end time are required for Personal and Test tasks.");
+            }
+            if (task.getStartTime() != null && task.getEndTime() != null && !task.getStartTime().isBefore(task.getEndTime())) {
+                throw new IllegalArgumentException("Start time must be before end time.");
+            }
+        } else if ("class".equalsIgnoreCase(type)) {
+            if (task.getStartDate() == null || task.getEndDate() == null) {
+                throw new IllegalArgumentException("Class start and end dates are required.");
+            }
+            if (task.getStartDate().isAfter(task.getEndDate())) {
+                throw new IllegalArgumentException("Class start date must be before end date.");
+            }
+        }
     }
 }

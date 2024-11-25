@@ -1,91 +1,120 @@
 package com.CollegeUnify.project.TaskManagement.Task_Mapping;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.CollegeUnify.project.TaskManagement.Task_Model.Task;
 
-@Component
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.List;
+
+@Repository
 public class TasksDao {
-    
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    // Fetch all tasks for calendar display
-    public List<Task> getAllTasks() {
-        String query = "SELECT id, title, description, priority, due_date, completed, created_at, updated_at, completed_at, event_duration, user_id FROM task";
-        return jdbcTemplate.query(query, new TaskRowMapper());
-    }
-
-    public List<Task> getCompletedTasks() {
-        String query = "SELECT id, title, description, priority, due_date, completed, created_at, updated_at, completed_at, event_duration, user_id FROM task WHERE completed = true";
-        return jdbcTemplate.query(query, new TaskRowMapper());
-    }
-
-    public Task getTaskById(int taskId) {
-        String query = "SELECT id, title, description, priority, due_date, completed, created_at, updated_at, completed_at, event_duration, user_id FROM task WHERE id = ?";
-        return jdbcTemplate.queryForObject(query, new Object[] { taskId }, new TaskRowMapper());
-    }
-
-    public boolean updateTask(Task task) {
-        String updateSQL = "UPDATE task SET title = ?, description = ?, priority = ?, type = ?, due_date = ?, completed = ?, updated_at = ?, event_duration = ?, WHERE id = ?";
-        int result = jdbcTemplate.update(
-            updateSQL, 
-            task.getTitle(), 
-            task.getDescription(), 
-            task.getPriority(), 
-            task.getType(),
-            task.getDueDate(), 
-            task.isCompleted(), 
-            task.getUpdatedAt(),
-            task.getEventDuration(),
-            task.getId()
-        );
-        return result > 0;
-    }
-
-    public boolean addTask(Task task, Long userId) {
-        String insertSQL = "INSERT INTO task (title, description, priority, type, due_date, completed, created_at, event_duration, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        int result = jdbcTemplate.update(
-            insertSQL, 
-            task.getTitle(), 
-            task.getDescription(), 
-            task.getPriority(), 
-            task.getType(),  // Pass the type
-            task.getDueDate(), 
-            task.isCompleted(), 
-            task.getCreatedAt(), 
-            task.getEventDuration(),
-            userId
-        );
-        return result > 0;
-    }
-
-    public boolean deleteTask(int taskId) {
-        String deleteSQL = "DELETE FROM task WHERE id = ?";
-        int result = jdbcTemplate.update(deleteSQL, taskId);
-        return result > 0;
-    }
-
+    // Fetch all tasks with repeat days for a specific user
     public List<Task> findByUserId(Long userId) {
-        String query = "SELECT id, title, description, priority, type, due_date, completed, created_at, updated_at, completed_at, event_duration, user_id FROM task WHERE user_id = ?";
-        return jdbcTemplate.query(query, new Object[]{userId}, new TaskRowMapper());
+        String query = """
+            SELECT 
+                t.id, t.title, t.description, t.priority, t.type, t.due_date, t.event_date,
+                t.start_time, t.end_time, t.is_repeating, t.repeat_pattern, t.start_date,
+                t.end_date, t.completed, t.completed_at, t.created_at, t.updated_at,
+                COALESCE(GROUP_CONCAT(rd.day), '') AS repeat_days
+            FROM task t
+            LEFT JOIN repeat_days rd ON t.id = rd.task_id
+            WHERE t.user_id = ?
+            GROUP BY 
+                t.id, t.title, t.description, t.priority, t.type, t.due_date, t.event_date,
+                t.start_time, t.end_time, t.is_repeating, t.repeat_pattern, t.start_date,
+                t.end_date, t.completed, t.completed_at, t.created_at, t.updated_at
+        """;
+    
+        // Use jdbcTemplate to query the database
+        return jdbcTemplate.query(query, new TaskRowMapper(), userId);
+    }
+    
+
+    // Fetch a specific task by ID
+    public Task findById(Long taskId) {
+        String query = """
+            SELECT t.*, GROUP_CONCAT(rd.day) AS repeat_days
+            FROM task t
+            LEFT JOIN repeat_days rd ON t.id = rd.task_id
+            WHERE t.id = ?
+            GROUP BY t.id
+        """;
+
+        return jdbcTemplate.queryForObject(query, new TaskRowMapper(), taskId);
     }
 
-    public boolean completeTask(int taskId) {
-        String updateSQL = "UPDATE task SET completed = true, completed_at = ? WHERE id = ?";
-        int result = jdbcTemplate.update(updateSQL, java.time.LocalDateTime.now(), taskId);
-        return result > 0;
+    // Add a new task to the database
+    public boolean save(Task task, Long userId) {
+        String insertSQL = """
+            INSERT INTO task (title, description, priority, type, due_date, event_date, start_time, end_time, due_time,
+                              is_repeating, repeat_pattern, start_date, end_date, completed, created_at, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)
+        """;
+    
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+    
+        int rowsAffected = jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, task.getTitle());
+            ps.setString(2, task.getDescription() != null ? task.getDescription() : "");
+            ps.setString(3, task.getPriority() != null ? task.getPriority() : "");
+            ps.setString(4, task.getType());
+            ps.setObject(5, task.getDueDate());
+            ps.setObject(6, task.getEventDate());
+            ps.setObject(7, task.getStartTime());
+            ps.setObject(8, task.getDueTime());
+            ps.setObject(9, task.getEndTime());
+            ps.setBoolean(10, task.isRepeating());
+            ps.setString(11, task.getRepeatPattern());
+            ps.setObject(12, task.getStartDate());
+            ps.setObject(13, task.getEndDate());
+            ps.setBoolean(14, task.isCompleted());
+            ps.setLong(15, userId);
+            return ps;
+        }, keyHolder);
+    
+        if (rowsAffected > 0) {
+            task.setId(keyHolder.getKey().longValue());
+            saveRepeatDays(task);
+            return true;
+        }
+    
+        System.err.println("Failed to save task: " + task);
+        return false;
+    }
+
+    // Save repeating days associated with a task
+    private void saveRepeatDays(Task task) {
+        if (task.getRepeatDays() != null && !task.getRepeatDays().isEmpty()) {
+            String insertRepeatDaysSQL = "INSERT INTO repeat_days (task_id, day) VALUES (?, ?)";
+            for (String day : task.getRepeatDays()) {
+                jdbcTemplate.update(insertRepeatDaysSQL, task.getId(), day);
+            }
+        }
+    }
+
+    // Mark a task as completed
+    public boolean markAsCompleted(Long taskId) {
+        String updateSQL = "UPDATE task SET completed = true, completed_at = NOW() WHERE id = ?";
+        return jdbcTemplate.update(updateSQL, taskId) > 0;
+    }
+
+    // Delete a task by ID
+    public boolean deleteById(Long taskId) {
+        String deleteRepeatDaysSQL = "DELETE FROM repeat_days WHERE task_id = ?";
+        String deleteTaskSQL = "DELETE FROM task WHERE id = ?";
+
+        jdbcTemplate.update(deleteRepeatDaysSQL, taskId); // Delete repeat days first
+        return jdbcTemplate.update(deleteTaskSQL, taskId) > 0;
     }
 }

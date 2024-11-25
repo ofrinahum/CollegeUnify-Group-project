@@ -1,9 +1,11 @@
 package com.CollegeUnify.project.TaskManagement.Task_Model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Duration;
-import com.CollegeUnify.project.Application.Application_Model.User;
+import java.time.LocalTime;
+import java.util.List;
 
+import com.CollegeUnify.project.Application.Application_Model.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,17 +18,53 @@ public class Task {
 
     private String title; // Task name
     private String description;
-    private String priority; // e.g., "low", "medium", "high"
 
+    @Column(nullable = false)
+    private String priority; // "low", "medium", "high"
+
+    @Column(nullable = false)
+    private String type; // "homework", "project", "personal", "test", "class"
+
+    // Homework and Project
     @Column(name = "due_date")
-    private LocalDateTime dueDate; // Used for "homework" and "project"
+    private LocalDate dueDate;
 
-    @Column(name = "event_date_time")
-    private LocalDateTime eventDateTime; // Used for "personal" or "test" tasks
+    // Personal and Test
+    @Column(name = "event_date")
+    private LocalDate eventDate;
 
-    private String type; // Can be "test", "homework", "project", or "personal"
+    @Column(name = "start_time")
+    private LocalTime startTime;
+
+    @Column(name = "end_time")
+    private LocalTime endTime;
+
+    @Column(name = "due_time")
+    private LocalTime dueTime;
+
+    // Personal and Class
+    private boolean isRepeating;
+
+    @Column(name = "repeat_pattern")
+    private String repeatPattern; // "DAILY", "WEEKLY", "MONTHLY"
+
+    // Class-specific fields
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @ElementCollection
+    @CollectionTable(name = "repeat_days", joinColumns = @JoinColumn(name = "task_id"))
+    @Column(name = "day")
+    private List<String> repeatDays;
 
     private boolean completed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -37,34 +75,34 @@ public class Task {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @Column(name = "event_duration")
-    private Long duration; 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     // Default constructor
-    public Task() {
-    }
+    public Task() {}
 
     // Constructor
-    public Task(Long id, String title, String description, String priority, LocalDateTime dueDate, 
-                LocalDateTime eventDateTime, String type, boolean completed, LocalDateTime createdAt, 
-                LocalDateTime updatedAt, LocalDateTime completedAt, User user, Long duration) {
+    public Task(Long id, String title, String description, String priority, String type, LocalDate dueDate,
+                LocalDate eventDate, LocalTime startTime, LocalTime endTime, boolean isRepeating,
+                String repeatPattern, LocalDate classStartDate, LocalDate classEndDate, boolean completed,
+                User user, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime completedAt,
+                List<String> repeatDays) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.priority = priority;
-        this.dueDate = dueDate;
-        this.eventDateTime = eventDateTime;
         this.type = type;
+        this.dueDate = dueDate;
+        this.eventDate = eventDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isRepeating = isRepeating;
+        this.repeatPattern = repeatPattern;
+        this.startDate = classStartDate;
+        this.endDate = classEndDate;
         this.completed = completed;
+        this.user = user;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.completedAt = completedAt;
-        this.user = user;
-        this.duration = duration;
+        this.repeatDays = repeatDays; // Initialize repeatDays
     }
 
     // Getters and Setters
@@ -100,22 +138,6 @@ public class Task {
         this.priority = priority;
     }
 
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public LocalDateTime getEventDateTime() {
-        return eventDateTime;
-    }
-
-    public void setEventDateTime(LocalDateTime eventDateTime) {
-        this.eventDateTime = eventDateTime;
-    }
-
     public String getType() {
         return type;
     }
@@ -124,12 +146,92 @@ public class Task {
         this.type = type;
     }
 
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(LocalDate eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setDueTime(LocalTime dueTime){
+        this.dueTime = dueTime;
+    }
+
+    public LocalTime getDueTime(){
+        return dueTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public boolean isRepeating() {
+        return isRepeating;
+    }
+
+    public void setRepeating(boolean repeating) {
+        isRepeating = repeating;
+    }
+
+    public String getRepeatPattern() {
+        return repeatPattern;
+    }
+
+    public void setRepeatPattern(String repeatPattern) {
+        this.repeatPattern = repeatPattern;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate classStartDate) {
+        this.startDate = classStartDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate classEndDate) {
+        this.endDate = classEndDate;
+    }
+
     public boolean isCompleted() {
         return completed;
     }
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -156,25 +258,27 @@ public class Task {
         this.completedAt = completedAt;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Long getEventDuration() {
-        return duration;
-    }
-
-    public void setEventDuration(Long eventDuration) {
-        this.duration = eventDuration;
+    // Priority-based duration logic
+    public int getPriorityDuration() {
+        switch (this.priority.toLowerCase()) {
+            case "low": return 5;
+            case "medium": return 10;
+            case "high": return 15;
+            default: throw new IllegalArgumentException("Unknown priority: " + this.priority);
+        }
     }
 
     // Convenience method for marking a task as completed
     public void markAsCompleted() {
         this.completed = true;
         this.completedAt = LocalDateTime.now();
+    }
+
+    public List<String> getRepeatDays() {
+        return repeatDays;
+    }
+
+    public void setRepeatDays(List<String> repeatDays) {
+        this.repeatDays = repeatDays;
     }
 }

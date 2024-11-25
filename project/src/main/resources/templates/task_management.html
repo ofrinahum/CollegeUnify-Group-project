@@ -5,133 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Management</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css">
 </head>
 <body>
 <div class="container mt-5">
     <h1 class="text-center">Task Management</h1>
 
-    <!-- Success or Error Messages -->
-    <div th:if="${success}" class="alert alert-success">
-        <span th:text="${success}"></span>
-    </div>
-    <div th:if="${error}" class="alert alert-danger">
-        <span th:text="${error}"></span>
-    </div>
+    <!-- Calendar -->
+    <div id="calendar" class="mb-4"></div>
 
     <!-- Create New Task Button -->
-    <a href="#" class="btn btn-primary mb-3" data-toggle="modal" data-target="#taskModal">Create New Task</a>
-
-    <!-- Task List -->
-    <ul class="list-group mt-4">
-        <li class="list-group-item" th:each="task : ${tasks}">
-            <div>
-                <strong th:text="${task.title}"></strong>
-            </div>
-            <p th:text="${task.description}"></p>
-            <p>Priority: <span th:text="${task.priority}"></span></p>
-            <p>Status: <span th:text="${task.completed ? 'Completed' : 'Pending'}"></span></p>
-
-            <!-- Display event duration for personal or test types -->
-            <div th:if="${task.type == 'personal' or task.type == 'test'}">
-                <p>Event Duration: <span th:text="${task.eventDuration}"></span> minutes</p>
-            </div>
-            <!-- Edit Button -->
-            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#taskEdit"
-                th:data-id="${task.id}"
-                th:data-title="${task.title}"
-                th:data-description="${task.description}"
-                th:data-priority="${task.priority}"
-                th:data-type="${task.type}"
-                th:data-due-date="${task.dueDate}"
-                th:data-event-date="${task.eventDateTime}"
-                th:data-event-duration="${task.eventDuration}">
-            Edit
-            </button>
-            <!-- Delete Button -->
-            <button type = "button" class = "btn btn-danger btn-sm" data-toggle = "modal" data-target = "#taskDelete">
-                Delete
-            </button>
-        </li>
-    </ul>
-
-    <!-- Model for Task Modification -->
-    <div class = "modal fade" id = "taskEdit" tabindex="-1" role = "dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
-        <div class = "modal-dialog" role = "document">
-            <div class = "modal-content">
-                <form id = "taskForm" method = "POST" action = "/tasks/edit">
-                    <!-- Include CSRF Token -->
-                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-                    <!-- Header w/ Exit Button -->
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="taskModalLabel">Edit Task</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <!-- Body -->
-                    <div class="modal-body">
-                        <!-- Dynamically populate userId from session -->
-                        <input type="hidden" name="userId" th:value="${user.id}">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="priority">Priority</label>
-                            <select class="form-control" id="priority" name="priority" required>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="type">Task Type</label>
-                            <select class="form-control" id="type" name="type" onchange="toggleDueDateFields()" required>
-                                <option value="homework">Homework</option>
-                                <option value="project">Project</option>
-                                <option value="test">Test</option>
-                                <option value="personal">Personal</option>
-                            </select>
-                        </div>
-
-                        <!-- Due Date Field -->
-                        <div class="form-group" id="dueDateField">
-                            <label for="dueDate">Due Date</label>
-                            <input type="datetime-local" class="form-control" id="dueDate" name="dueDate">
-                        </div>
-
-                        <!-- Event Date Field (for Test/Personal) -->
-                        <div class="form-group" id="eventDateField" style="display: none;">
-                            <label for="eventDateTime">Event Date/Time</label>
-                            <input type="datetime-local" class="form-control" id="eventDateTime" name="eventDateTime">
-                        </div>
-
-                        <!-- Event Duration Field (for Test/Personal) -->
-                        <div class="form-group" id="eventDurationField" style="display: none;">
-                            <label for="eventDuration">Event Duration (in minutes)</label>
-                            <input type="number" class="form-control" id="eventDuration" name="eventDuration" min="1">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save Task</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#taskModal">Create New Task</button>
 
     <!-- Modal for Task Form -->
     <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="taskForm" method="POST" action="/tasks/add">
-                    <!-- Include CSRF Token -->
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
                     <div class="modal-header">
@@ -140,21 +30,22 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <!-- Dynamically populate userId from session -->
-                        <input type="hidden" name="userId" th:value="${user.id}">
 
+                    <div class="modal-body">
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input type="text" class="form-control" id="title" name="title" required>
                         </div>
+
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         </div>
-                        <div class="form-group">
+
+                        <!-- Priority Field -->
+                        <div class="form-group" id="priorityField">
                             <label for="priority">Priority</label>
-                            <select class="form-control" id="priority" name="priority" required>
+                            <select class="form-control" id="priority" name="priority">
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
                                 <option value="high">High</option>
@@ -163,32 +54,183 @@
 
                         <div class="form-group">
                             <label for="type">Task Type</label>
-                            <select class="form-control" id="type" name="type" onchange="toggleDueDateFields()" required>
+                            <select class="form-control" id="type" name="type" onchange="toggleFields()" required>
                                 <option value="homework">Homework</option>
                                 <option value="project">Project</option>
                                 <option value="test">Test</option>
                                 <option value="personal">Personal</option>
+                                <option value="class">Class</option>
                             </select>
                         </div>
 
-                        <!-- Due Date Field -->
+                        <!-- Homework/Project Due Date -->
                         <div class="form-group" id="dueDateField">
                             <label for="dueDate">Due Date</label>
-                            <input type="datetime-local" class="form-control" id="dueDate" name="dueDate">
+                            <input type="date" class="form-control" id="dueDate" name="dueDate">
+                            <label for="dueTime">Due Time</label> 
+                            <input type="time" class="form-control" id="dueTime" name="dueTime">
+                        </div>
+                            
+
+
+                        <!-- Test Fields -->
+                        <div id="testFields" style="display: none;">
+                            <div class="form-group">
+                                <label for="testEventDate">Event Date</label>
+                                <input type="date" class="form-control" id="testEventDate" name="eventDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="startTimeTest">Start Time</label>
+                                <input type="time" class="form-control" id="startTimeTest" name="startTime">
+                            </div>
+                            <div class="form-group">
+                                <label for="endTimeTest">End Time</label>
+                                <input type="time" class="form-control" id="endTimeTest" name="endTime">
+                            </div>
                         </div>
 
-                        <!-- Event Date Field (for Test/Personal) -->
-                        <div class="form-group" id="eventDateField" style="display: none;">
-                            <label for="eventDateTime">Event Date/Time</label>
-                            <input type="datetime-local" class="form-control" id="eventDateTime" name="eventDateTime">
+                        <!-- Personal Fields -->
+                        <div id="personalFields" style="display: none;">
+                            <div id="personalNonRepeating">
+                                <div class="form-group">
+                                    <label for="personalEventDate">Event Date</label>
+                                    <input type="date" class="form-control" id="personalEventDate" name="eventDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="personalStartTime">Start Time</label>
+                                    <input type="time" class="form-control" id="personalStartTime" name="startTime">
+                                </div>
+                                <div class="form-group">
+                                    <label for="personalEndTime">End Time</label>
+                                    <input type="time" class="form-control" id="personalEndTime" name="endTime">
+                                </div>
+                            </div>
+                        
+                            <div id="personalRepeating" style="display: none;">
+                                <div class="form-group">
+                                    <label for="start_time">Start Time</label>
+                                    <input type="time" class="form-control" id="personalStartTime" name="startTime">
+                                </div>
+                                <div class="form-group">
+                                    <label for="end_time">End Time</label>
+                                    <input type="time" class="form-control" id="personalEndTime" name="endTime">
+                                </div>
+                                <div class="form-group">
+                                    <label for="class_start_date">Start Date</label>
+                                    <input type="date" class="form-control" id="personalStartDate" name="startDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="class_end_date">End Date</label>
+                                    <input type="date" class="form-control" id="personalEndDate" name="endDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="personalRepeatPattern">Repeat Frequency</label>
+                                    <select class="form-control" id="personalRepeatPattern" name="repeatPattern" onchange="handleRepeatDays('personal')">
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="bi-weekly">Bi-Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                <div id="repeatDaysPersonal" style="display: none;">
+                                    <label>Repeat On</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Monday" id="mondayPersonal" name="repeatDays">
+                                        <label class="form-check-label" for="mondayPersonal">Monday</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Tuesday" id="tuesdayPersonal" name="repeatDays">
+                                        <label class="form-check-label" for="tuesdayPersonal">Tuesday</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Wednesday" id="wednesdayPersonal" name="repeatDays">
+                                        <label class="form-check-label" for="wednesdayPersonal">Wednesday</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Thursday" id="thursdayPersonal" name="repeatDays">
+                                        <label class="form-check-label" for="thursdayPersonal">Thursday</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Friday" id="fridayPersonal" name="repeatDays">
+                                        <label class="form-check-label" for="fridayPersonal">Friday</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Saturday" id="saturdayPersonal" name="repeatDays">
+                                        <label class="form-check-label" for="saturdayPersonal">Saturday</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="Sunday" id="sundayPersonal" name="repeatDays">
+                                        <label class="form-check-label" for="sundayPersonal">Sunday</label>
+                                    </div>
+                                </div>
+                             </div>
+                             <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isRepeating" name="isRepeating" onchange="toggleRepeating()">
+                                <label class="form-check-label" for="isRepeating">Is Repeating?</label>
+                            </div>
                         </div>
 
-                        <!-- Event Duration Field (for Test/Personal) -->
-                        <div class="form-group" id="eventDurationField" style="display: none;">
-                            <label for="eventDuration">Event Duration (in minutes)</label>
-                            <input type="number" class="form-control" id="eventDuration" name="eventDuration" min="1">
+                        <!-- Class Fields -->
+                        <div id="classFields" style="display: none;">
+                            <div class="form-group">
+                                <label for="classStartTime">Start Time</label>
+                                <input type="time" class="form-control" id="classStartTime" name="startTime">
+                            </div>
+                            <div class="form-group">
+                                <label for="classEndTime">End Time</label>
+                                <input type="time" class="form-control" id="classEndTime" name="endTime">
+                            </div>
+                            <div class="form-group">
+                                <label for="classStartDate">Start Date</label>
+                                <input type="date" class="form-control" id="classStartDate" name="startDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="classEndDate">End Date</label>
+                                <input type="date" class="form-control" id="classEndDate" name="endDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="classRepeatPattern">Repeat Frequency</label>
+                                <select class="form-control" id="classRepeatPattern" name="repeatPattern" onchange="handleRepeatDays('class')">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="bi-weekly">Bi-Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div id="repeatDaysClass" style="display: none;">
+                                <label>Repeat On</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Monday" id="mondayClass" name="repeatDays">
+                                    <label class="form-check-label" for="mondayClass">Monday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Tuesday" id="tuesdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="tuesdayClass">Tuesday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Wednesday" id="wednesdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="wednesdayClass">Wednesday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Thursday" id="thursdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="thursdayClass">Thursday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Friday" id="fridayClass" name="repeatDays">
+                                    <label class="form-check-label" for="fridayClass">Friday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Saturday" id="saturdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="saturdayClass">Saturday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Sunday" id="sundayClass" name="repeatDays">
+                                    <label class="form-check-label" for="sundayClass">Sunday</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Save Task</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -197,25 +239,55 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS and dependencies -->
+</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function toggleFields() {
+        const type = document.getElementById('type').value;
 
-    <script>
-        function toggleDueDateFields() {
-            var taskType = document.getElementById('type').value;
-            if (taskType === 'test' || taskType === 'personal') {
-                document.getElementById('dueDateField').style.display = 'none';
-                document.getElementById('eventDateField').style.display = 'block';
-                document.getElementById('eventDurationField').style.display = 'block';
-            } else {
-                document.getElementById('dueDateField').style.display = 'block';
-                document.getElementById('eventDateField').style.display = 'none';
-                document.getElementById('eventDurationField').style.display = 'none';
-            }
+        const priorityField = document.getElementById('priorityField');
+        const dueDateField = document.getElementById('dueDateField');
+        const testFields = document.getElementById('testFields');
+        const personalFields = document.getElementById('personalFields');
+        const classFields = document.getElementById('classFields');
+
+        priorityField.style.display = 'none';
+        dueDateField.style.display = 'none';
+        testFields.style.display = 'none';
+        personalFields.style.display = 'none';
+        classFields.style.display = 'none';
+
+        if (type === 'homework' || type === 'project') {
+            priorityField.style.display = 'block';
+            dueDateField.style.display = 'block';
+        } else if (type === 'test') {
+            priorityField.style.display = 'block';
+            testFields.style.display = 'block';
+        } else if (type === 'personal') {
+            personalFields.style.display = 'block';
+        } else if (type === 'class') {
+            classFields.style.display = 'block';
         }
-    </script>
+    }
 
+    function toggleRepeating() {
+        const isRepeating = document.getElementById('isRepeating').checked;
+        document.getElementById('personalNonRepeating').style.display = isRepeating ? 'none' : 'block';
+        document.getElementById('personalRepeating').style.display = isRepeating ? 'block' : 'none';
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('type').value = 'homework';
+        toggleFields();
+    });
+
+    document.getElementById('taskModal').addEventListener('show.bs.modal', function () {
+        document.getElementById('type').value = 'homework';
+        toggleFields();
+    });
+</script>
 </body>
 </html>
