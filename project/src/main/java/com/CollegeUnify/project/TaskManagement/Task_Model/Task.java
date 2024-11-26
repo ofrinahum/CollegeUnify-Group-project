@@ -19,7 +19,7 @@ public class Task {
     private String title; // Task name
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "priority")
     private String priority; // "low", "medium", "high"
 
     @Column(nullable = false)
@@ -41,9 +41,6 @@ public class Task {
 
     @Column(name = "due_time")
     private LocalTime dueTime;
-
-    // Personal and Class
-    private boolean isRepeating;
 
     @Column(name = "repeat_pattern")
     private String repeatPattern; // "DAILY", "WEEKLY", "MONTHLY"
@@ -93,7 +90,6 @@ public class Task {
         this.eventDate = eventDate;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.isRepeating = isRepeating;
         this.repeatPattern = repeatPattern;
         this.startDate = classStartDate;
         this.endDate = classEndDate;
@@ -186,14 +182,6 @@ public class Task {
         this.endTime = endTime;
     }
 
-    public boolean isRepeating() {
-        return isRepeating;
-    }
-
-    public void setRepeating(boolean repeating) {
-        isRepeating = repeating;
-    }
-
     public String getRepeatPattern() {
         return repeatPattern;
     }
@@ -260,6 +248,10 @@ public class Task {
 
     // Priority-based duration logic
     public int getPriorityDuration() {
+        if (this.priority == null || this.priority.isEmpty()) {
+            // Return a default value or handle the null case based on your logic
+            return 0; // Default duration for tasks with no priority
+        }
         switch (this.priority.toLowerCase()) {
             case "low": return 5;
             case "medium": return 10;

@@ -42,18 +42,18 @@ public class TaskController {
     // Add a new task
     @PostMapping("/add")
     public String addTask(@ModelAttribute Task task, Principal principal) {
+        System.out.println("Task received: " + task); // Debug log
         String username = principal.getName();
         User user = userRepository.findByEmail(username);
-
+    
         if (user == null) {
-            throw new IllegalStateException("Authenticated user not found in the database.");
+            throw new IllegalStateException("Authenticated user not found.");
         }
-
-        taskService.validateTask(task); // Validate based on type
-        taskService.save(task, user.getId()); // Save the task
+    
+        taskService.save(task, user.getId());
         return "redirect:/tasks";
     }
-
+    
     // Mark a task as completed
     @PostMapping("/{taskId}/complete")
     public String completeTask(@PathVariable Long taskId) {

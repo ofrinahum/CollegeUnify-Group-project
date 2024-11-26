@@ -65,167 +65,76 @@
 
                         <!-- Homework/Project Due Date -->
                         <div class="form-group" id="dueDateField">
-                            <label for="dueDate">Due Date</label>
+                            <label for="due_date">Due Date</label>
                             <input type="date" class="form-control" id="dueDate" name="dueDate">
-                            <label for="dueTime">Due Time</label> 
+                            <label for="due_time">Due Time</label> 
                             <input type="time" class="form-control" id="dueTime" name="dueTime">
                         </div>
                             
 
 
-                        <!-- Test Fields -->
-                        <div id="testFields" style="display: none;">
-                            <div class="form-group">
-                                <label for="testEventDate">Event Date</label>
-                                <input type="date" class="form-control" id="testEventDate" name="eventDate">
+                        <!-- Test and Personal Fields -->
+                            <div class="form-group" id = "eventDateField" style = "display: none;">
+                                <label for="event_date">Event Date</label>
+                                <input type="date" class="form-control" id="eventDate" name="eventDate">
                             </div>
-                            <div class="form-group">
-                                <label for="startTimeTest">Start Time</label>
-                                <input type="time" class="form-control" id="startTimeTest" name="startTime">
-                            </div>
-                            <div class="form-group">
-                                <label for="endTimeTest">End Time</label>
-                                <input type="time" class="form-control" id="endTimeTest" name="endTime">
-                            </div>
-                        </div>
 
-                        <!-- Personal Fields -->
-                        <div id="personalFields" style="display: none;">
-                            <div id="personalNonRepeating">
-                                <div class="form-group">
-                                    <label for="personalEventDate">Event Date</label>
-                                    <input type="date" class="form-control" id="personalEventDate" name="eventDate">
-                                </div>
-                                <div class="form-group">
-                                    <label for="personalStartTime">Start Time</label>
-                                    <input type="time" class="form-control" id="personalStartTime" name="startTime">
-                                </div>
-                                <div class="form-group">
-                                    <label for="personalEndTime">End Time</label>
-                                    <input type="time" class="form-control" id="personalEndTime" name="endTime">
-                                </div>
+                            <div class="form-group" id = "startEndField" style = "display: none;">
+                                <label for="start_time">Start Time</label>
+                                <input type="time" class="form-control" id="startTime" name="startTime">
+                                <label for="end_time">End Time</label>
+                                <input type="time" class="form-control" id="endTime" name="endTime">
                             </div>
-                        
-                            <div id="personalRepeating" style="display: none;">
-                                <div class="form-group">
-                                    <label for="start_time">Start Time</label>
-                                    <input type="time" class="form-control" id="personalStartTime" name="startTime">
-                                </div>
-                                <div class="form-group">
-                                    <label for="end_time">End Time</label>
-                                    <input type="time" class="form-control" id="personalEndTime" name="endTime">
-                                </div>
-                                <div class="form-group">
-                                    <label for="class_start_date">Start Date</label>
-                                    <input type="date" class="form-control" id="personalStartDate" name="startDate">
-                                </div>
-                                <div class="form-group">
-                                    <label for="class_end_date">End Date</label>
-                                    <input type="date" class="form-control" id="personalEndDate" name="endDate">
-                                </div>
-                                <div class="form-group">
-                                    <label for="personalRepeatPattern">Repeat Frequency</label>
-                                    <select class="form-control" id="personalRepeatPattern" name="repeatPattern" onchange="handleRepeatDays('personal')">
-                                        <option value="daily">Daily</option>
-                                        <option value="weekly">Weekly</option>
-                                        <option value="bi-weekly">Bi-Weekly</option>
-                                        <option value="monthly">Monthly</option>
-                                    </select>
-                                </div>
-                                <div id="repeatDaysPersonal" style="display: none;">
-                                    <label>Repeat On</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Monday" id="mondayPersonal" name="repeatDays">
-                                        <label class="form-check-label" for="mondayPersonal">Monday</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Tuesday" id="tuesdayPersonal" name="repeatDays">
-                                        <label class="form-check-label" for="tuesdayPersonal">Tuesday</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Wednesday" id="wednesdayPersonal" name="repeatDays">
-                                        <label class="form-check-label" for="wednesdayPersonal">Wednesday</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Thursday" id="thursdayPersonal" name="repeatDays">
-                                        <label class="form-check-label" for="thursdayPersonal">Thursday</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Friday" id="fridayPersonal" name="repeatDays">
-                                        <label class="form-check-label" for="fridayPersonal">Friday</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Saturday" id="saturdayPersonal" name="repeatDays">
-                                        <label class="form-check-label" for="saturdayPersonal">Saturday</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="Sunday" id="sundayPersonal" name="repeatDays">
-                                        <label class="form-check-label" for="sundayPersonal">Sunday</label>
-                                    </div>
-                                </div>
-                             </div>
-                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="isRepeating" name="isRepeating" onchange="toggleRepeating()">
-                                <label class="form-check-label" for="isRepeating">Is Repeating?</label>
-                            </div>
-                        </div>
 
                         <!-- Class Fields -->
                         <div id="classFields" style="display: none;">
                             <div class="form-group">
-                                <label for="classStartTime">Start Time</label>
-                                <input type="time" class="form-control" id="classStartTime" name="startTime">
-                            </div>
-                            <div class="form-group">
-                                <label for="classEndTime">End Time</label>
-                                <input type="time" class="form-control" id="classEndTime" name="endTime">
-                            </div>
-                            <div class="form-group">
-                                <label for="classStartDate">Start Date</label>
+                                <label for="start_date">Start Date</label>
                                 <input type="date" class="form-control" id="classStartDate" name="startDate">
                             </div>
                             <div class="form-group">
-                                <label for="classEndDate">End Date</label>
+                                <label for="end_date">End Date</label>
                                 <input type="date" class="form-control" id="classEndDate" name="endDate">
                             </div>
                             <div class="form-group">
-                                <label for="classRepeatPattern">Repeat Frequency</label>
-                                <select class="form-control" id="classRepeatPattern" name="repeatPattern" onchange="handleRepeatDays('class')">
+                                <label for="repeat_pattern">Repeat Frequency</label>
+                                <select class="form-control" id="classRepeatPattern" name="repeatPattern">
+                                    <option value="" selected hidden>None</option>
                                     <option value="daily">Daily</option>
                                     <option value="weekly">Weekly</option>
                                     <option value="bi-weekly">Bi-Weekly</option>
                                     <option value="monthly">Monthly</option>
                                 </select>
-                            </div>
+                            </div>                            
                             <div id="repeatDaysClass" style="display: none;">
                                 <label>Repeat On</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Monday" id="mondayClass" name="repeatDays">
-                                    <label class="form-check-label" for="mondayClass">Monday</label>
+                                    <label class="form-check-label" for="day">Monday</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Tuesday" id="tuesdayClass" name="repeatDays">
-                                    <label class="form-check-label" for="tuesdayClass">Tuesday</label>
+                                    <label class="form-check-label" for="day">Tuesday</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Wednesday" id="wednesdayClass" name="repeatDays">
-                                    <label class="form-check-label" for="wednesdayClass">Wednesday</label>
+                                    <label class="form-check-label" for="day">Wednesday</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Thursday" id="thursdayClass" name="repeatDays">
-                                    <label class="form-check-label" for="thursdayClass">Thursday</label>
+                                    <label class="form-check-label" for="day">Thursday</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Friday" id="fridayClass" name="repeatDays">
-                                    <label class="form-check-label" for="fridayClass">Friday</label>
+                                    <label class="form-check-label" for="day">Friday</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Saturday" id="saturdayClass" name="repeatDays">
-                                    <label class="form-check-label" for="saturdayClass">Saturday</label>
+                                    <label class="form-check-label" for="day">Saturday</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="Sunday" id="sundayClass" name="repeatDays">
-                                    <label class="form-check-label" for="sundayClass">Sunday</label>
+                                    <label class="form-check-label" for="day">Sunday</label>
                                 </div>
                             </div>
                         </div>
@@ -243,51 +152,92 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    function toggleFields() {
-        const type = document.getElementById('type').value;
+    <script>
+function toggleFields() {
+    const type = document.getElementById('type').value;
+    const isRepeatingCheckbox = document.getElementById('isRepeating');
+    const repeatPatternField = document.getElementById('personalRepeatPattern');
 
-        const priorityField = document.getElementById('priorityField');
-        const dueDateField = document.getElementById('dueDateField');
-        const testFields = document.getElementById('testFields');
-        const personalFields = document.getElementById('personalFields');
-        const classFields = document.getElementById('classFields');
+    // Show/hide fields based on task type
+    const eventDateField = document.getElementById('eventDateField');
+    const startEndField = document.getElementById('startEndField')
+    const dueDateField = document.getElementById('dueDateField');
+    const priorityField = document.getElementById('priorityField');
+    const classFields = document.getElementById('classFields');
 
-        priorityField.style.display = 'none';
-        dueDateField.style.display = 'none';
-        testFields.style.display = 'none';
-        personalFields.style.display = 'none';
-        classFields.style.display = 'none';
+    dueDateField.style.display = 'none';
+    priorityField.style.display = 'none';
+    eventDateField.style.display = 'none';
+    startEndField.style.display = 'none';
+    classFields.style.display = 'none';
 
-        if (type === 'homework' || type === 'project') {
-            priorityField.style.display = 'block';
-            dueDateField.style.display = 'block';
-        } else if (type === 'test') {
-            priorityField.style.display = 'block';
-            testFields.style.display = 'block';
-        } else if (type === 'personal') {
-            personalFields.style.display = 'block';
-        } else if (type === 'class') {
-            classFields.style.display = 'block';
-        }
+    if(type === 'homework' || type === 'project'){
+        dueDateField.style.display = 'block';
     }
 
-    function toggleRepeating() {
-        const isRepeating = document.getElementById('isRepeating').checked;
-        document.getElementById('personalNonRepeating').style.display = isRepeating ? 'none' : 'block';
-        document.getElementById('personalRepeating').style.display = isRepeating ? 'block' : 'none';
+    if(type === 'homework' || type === 'test' || type === 'project'){
+        priorityField.style.display = 'block';
     }
 
+    if(type === 'test' || type === 'personal'){
+        eventDateField.style.display = 'block';
+        startEndField.style.display = 'block';
+    }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('type').value = 'homework';
-        toggleFields();
-    });
+    if(type === 'class'){
+        startEndField.style.display = 'block';
+        classFields.style.display = 'block';
+    }
+    }
 
-    document.getElementById('taskModal').addEventListener('show.bs.modal', function () {
-        document.getElementById('type').value = 'homework';
-        toggleFields();
+    
+function handleRepeatDays(type) {
+    const repeatPattern = document.getElementById(type + 'RepeatPattern').value;
+    const repeatDaysSection = document.getElementById('repeatDaysClass');
+
+    if (repeatPattern === 'daily') {
+        // Hide the repeat days section for daily repeat
+        repeatDaysSection.style.display = 'none';
+
+        // Automatically check all days
+        const checkboxes = repeatDaysSection.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = true);
+    } else if (repeatPattern === 'weekly' || repeatPattern === 'bi-weekly' || repeatPattern === 'monthly') {
+        // Show the repeat days section for weekly, bi-weekly, or monthly repeat patterns
+        repeatDaysSection.style.display = 'block';
+
+        // Ensure no days are pre-checked initially
+        const checkboxes = repeatDaysSection.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+    } else {
+        // If no pattern is selected, hide the repeat days section and clear selections
+        repeatDaysSection.style.display = 'none';
+
+        const checkboxes = repeatDaysSection.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+    }
+}
+
+// Attach event listener to the repeat pattern dropdown for the 'class' type
+document.getElementById('classRepeatPattern').addEventListener('change', function () {
+    handleRepeatDays('class');
+});
+
+
+    
+        document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('taskForm');
+    const submitButton = document.querySelector('.btn-success');
+    if (!form) {
+        console.error("Form not found!");
+        return;
+    }
+
+    submitButton.addEventListener('click', function () {
+        console.log("Button clicked!");
+        form.submit(); // Forces form submission
     });
-</script>
+});
+    </script>
 </body>
 </html>

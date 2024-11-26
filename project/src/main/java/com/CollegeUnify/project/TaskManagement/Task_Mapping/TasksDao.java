@@ -22,16 +22,16 @@ public class TasksDao {
     public List<Task> findByUserId(Long userId) {
         String query = """
             SELECT 
-                t.id, t.title, t.description, t.priority, t.type, t.due_date, t.event_date,
-                t.start_time, t.end_time, t.is_repeating, t.repeat_pattern, t.start_date,
+                t.id, t.title, t.description, t.priority, t.type, t.due_date, t.due_time, t.event_date,
+                t.start_time, t.end_time, t.repeat_pattern, t.start_date,
                 t.end_date, t.completed, t.completed_at, t.created_at, t.updated_at,
                 COALESCE(GROUP_CONCAT(rd.day), '') AS repeat_days
             FROM task t
             LEFT JOIN repeat_days rd ON t.id = rd.task_id
             WHERE t.user_id = ?
             GROUP BY 
-                t.id, t.title, t.description, t.priority, t.type, t.due_date, t.event_date,
-                t.start_time, t.end_time, t.is_repeating, t.repeat_pattern, t.start_date,
+                t.id, t.title, t.description, t.priority, t.type, t.due_date, t.due_time, t.event_date,
+                t.start_time, t.end_time, t.repeat_pattern, t.start_date,
                 t.end_date, t.completed, t.completed_at, t.created_at, t.updated_at
         """;
     
@@ -56,9 +56,8 @@ public class TasksDao {
     // Add a new task to the database
     public boolean save(Task task, Long userId) {
         String insertSQL = """
-            INSERT INTO task (title, description, priority, type, due_date, event_date, start_time, end_time, due_time,
-                              is_repeating, repeat_pattern, start_date, end_date, completed, created_at, user_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)
+            INSERT INTO task (title, description, priority, type, due_date, event_date, start_time, end_time, due_time, repeat_pattern, start_date, end_date, completed, created_at, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)
         """;
     
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -67,21 +66,21 @@ public class TasksDao {
             PreparedStatement ps = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, task.getTitle());
             ps.setString(2, task.getDescription() != null ? task.getDescription() : "");
-            ps.setString(3, task.getPriority() != null ? task.getPriority() : "");
+            ps.setString(3, task.getPriority() != null && isPriorityApplicable(task.getType()) ? task.getPriority() : null);
             ps.setString(4, task.getType());
             ps.setObject(5, task.getDueDate());
             ps.setObject(6, task.getEventDate());
             ps.setObject(7, task.getStartTime());
-            ps.setObject(8, task.getDueTime());
-            ps.setObject(9, task.getEndTime());
-            ps.setBoolean(10, task.isRepeating());
-            ps.setString(11, task.getRepeatPattern());
-            ps.setObject(12, task.getStartDate());
-            ps.setObject(13, task.getEndDate());
-            ps.setBoolean(14, task.isCompleted());
-            ps.setLong(15, userId);
+            ps.setObject(8, task.getEndTime());
+            ps.setObject(9, task.getDueTime());
+            ps.setString(10, task.getRepeatPattern() != null && isRepeatApplicable(task.getType()) ? task.getRepeatPattern() : null); // Handle null
+            ps.setObject(11, task.getStartDate());
+            ps.setObject(12, task.getEndDate());
+            ps.setBoolean(13, task.isCompleted());
+            ps.setLong(14, userId);
             return ps;
         }, keyHolder);
+        
     
         if (rowsAffected > 0) {
             task.setId(keyHolder.getKey().longValue());
@@ -95,12 +94,20 @@ public class TasksDao {
 
     // Save repeating days associated with a task
     private void saveRepeatDays(Task task) {
-        if (task.getRepeatDays() != null && !task.getRepeatDays().isEmpty()) {
+        if (task.getRepeatDays() != null && isRepeatApplicable(task.getType()) && !task.getRepeatDays().isEmpty()) {
             String insertRepeatDaysSQL = "INSERT INTO repeat_days (task_id, day) VALUES (?, ?)";
             for (String day : task.getRepeatDays()) {
-                jdbcTemplate.update(insertRepeatDaysSQL, task.getId(), day);
+                jdbcTemplate.update(insertRepeatDaysSQL, task.getId(), day.trim());
             }
         }
+    }
+    
+    private boolean isPriorityApplicable(String type) {
+        return type.equalsIgnoreCase("homework") || type.equalsIgnoreCase("project") || type.equalsIgnoreCase("test");
+    }
+
+    private boolean isRepeatApplicable(String type){
+        return type.equalsIgnoreCase("class");
     }
 
     // Mark a task as completed

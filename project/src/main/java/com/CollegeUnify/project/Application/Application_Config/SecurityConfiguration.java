@@ -46,6 +46,7 @@ public class SecurityConfiguration{
         http
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/tasks/**").authenticated()
+                .requestMatchers("/tasks/add/**").authenticated()
                 .requestMatchers("/registration**").permitAll()
                 .requestMatchers("/login/**").permitAll()
                 .requestMatchers("/js/**").permitAll()
