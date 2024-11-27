@@ -49,10 +49,10 @@ public class TasksDao {
             WHERE t.id = ?
             GROUP BY t.id
         """;
-
+    
         return jdbcTemplate.queryForObject(query, new TaskRowMapper(), taskId);
     }
-
+    
     // Add a new task to the database
     public boolean save(Task task, Long userId) {
         String insertSQL = """
@@ -120,8 +120,46 @@ public class TasksDao {
     public boolean deleteById(Long taskId) {
         String deleteRepeatDaysSQL = "DELETE FROM repeat_days WHERE task_id = ?";
         String deleteTaskSQL = "DELETE FROM task WHERE id = ?";
-
+    
         jdbcTemplate.update(deleteRepeatDaysSQL, taskId); // Delete repeat days first
-        return jdbcTemplate.update(deleteTaskSQL, taskId) > 0;
+        int rowsAffected = jdbcTemplate.update(deleteTaskSQL, taskId); // Delete the task itself
+        return rowsAffected > 0;
     }
+
+    public boolean update(Task task) {
+        String updateSQL = """
+            UPDATE task 
+            SET title = ?, description = ?, priority = ?, type = ?, due_date = ?, event_date = ?, 
+                start_time = ?, end_time = ?, due_time = ?, repeat_pattern = ?, start_date = ?, 
+                end_date = ?, updated_at = NOW() 
+            WHERE id = ?
+        """;
+    
+        int rowsAffected = jdbcTemplate.update(updateSQL,
+            task.getTitle(),
+            task.getDescription(),
+            isPriorityApplicable(task.getType()) ? task.getPriority() : null,
+            task.getType(),
+            task.getDueDate(),
+            task.getEventDate(),
+            task.getStartTime(),
+            task.getEndTime(),
+            task.getDueTime(),
+            isRepeatApplicable(task.getType()) ? task.getRepeatPattern() : null,
+            task.getStartDate(),
+            task.getEndDate(),
+            task.getId()
+        );
+    
+        // Update repeat days if applicable
+        if (isRepeatApplicable(task.getType())) {
+            String deleteRepeatDaysSQL = "DELETE FROM repeat_days WHERE task_id = ?";
+            jdbcTemplate.update(deleteRepeatDaysSQL, task.getId());
+            saveRepeatDays(task);
+        }
+    
+        return rowsAffected > 0;
+    }    
+    
+    
 }

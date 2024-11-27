@@ -2,9 +2,12 @@ package com.CollegeUnify.project.TaskManagement.Task_Web;
 
 import com.CollegeUnify.project.Application.Application_Model.User;
 import com.CollegeUnify.project.Application.Application_Repository.UserRepository;
+import com.CollegeUnify.project.TaskManagement.Task_Mapping.TasksDao;
 import com.CollegeUnify.project.TaskManagement.Task_Model.Task;
 import com.CollegeUnify.project.TaskManagement.Task_Service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +25,9 @@ public class TaskController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired 
+    private TasksDao tasksDao;
 
     // Show task management page
     @GetMapping
@@ -63,10 +69,38 @@ public class TaskController {
 
     // Delete a task
     @PostMapping("/{taskId}/delete")
-    public String deleteTask(@PathVariable Long taskId) {
-        taskService.deleteById(taskId);
-        return "redirect:/tasks";
+public String deleteTask(@PathVariable Long taskId) {
+    taskService.deleteById(taskId);
+    return "redirect:/tasks";
+}
+
+@GetMapping("/api/{taskId}")
+@ResponseBody
+public ResponseEntity<Task> getTaskById(@PathVariable Long taskId) {
+    Task task = tasksDao.findById(taskId);
+    if (task == null) {
+        return ResponseEntity.notFound().build();
     }
+    return ResponseEntity.ok(task);
+}
+
+@PutMapping("/{taskId}/update")
+@ResponseBody
+public ResponseEntity<String> updateTask(@PathVariable Long taskId, @RequestBody Task updatedTask) {
+    Task existingTask = tasksDao.findById(taskId);
+    if (existingTask == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    updatedTask.setId(taskId);
+    boolean success = tasksDao.update(updatedTask);
+    if (success) {
+        return ResponseEntity.ok("Task updated successfully");
+    } else {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update task");
+    }
+}
+
 
     // Fetch tasks as JSON for the calendar
     @GetMapping("/api")
