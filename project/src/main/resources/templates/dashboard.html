@@ -1,32 +1,387 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous">
-    <title>Home Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CollegeUnify</title>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+    
+        /* Background blur effect */
+        body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-image: url('/images/registerBackground.png'); /* Add the path to your image */
+        background-size: cover; /* Ensure the background image covers the entire page */
+        background-position: center; /* Center the image */
+        background-repeat: no-repeat; /* Prevent the image from repeating */
+        height: 100vh;
+        overflow: hidden;
+        /* Remove flexbox styles that center content */
+        display: block; /* Default block-level layout */
+        }
+
+        /* Homework: Blue */
+            .event-homework {
+            background-color: #edbf8e;
+            border-color: #eab379;
+            color: black !important; /* Ensure text is black */
+        }
+
+        /* Project: Green */
+        .event-project {
+            background-color: #cfa9f5;
+            border-color: #b580ea;
+            color: black !important; /* Ensure text is black */
+        }
+
+        /* Test: Red */
+        .event-test {
+            background-color: #e39797;
+            border-color: #d97e7e;
+            color: black !important; /* Ensure text is black */
+        }
+
+        /* Personal: Purple */
+        .event-personal {
+            background-color: #97aaff;
+            border-color: #6b84f6;
+            color: black !important; /* Ensure text is black */
+        }
+
+        /* Class: Orange */
+        .event-class {
+            background-color: #ede0a5;
+            border-color: #edde99;
+            color: black !important; /* Ensure text is black */
+        }
+
+            .fc-event {
+            color: black !important; /* Ensure all event text is black */
+        }
+
+        .fc-event-title {
+            color: black !important; /* Specifically target the title text */
+        }
+        /* Ensure all event text, including times, is black */
+        .fc-timegrid-event .fc-event-time,
+        .fc-daygrid-event .fc-event-time,
+        .fc-list-event .fc-event-time,
+        .fc-event-title {
+            color: black !important; /* Ensure text, including times, is black */
+        }
+
+        /* Override for all event text on all views */
+        .fc-event,
+        .fc-event .fc-time {
+            color: black !important;
+        }
+
+        /* Specific override for times in timeGrid view */
+        .fc-timegrid-event .fc-time {
+            color: black !important; /* Ensure time is black in timeGrid view */
+        }
+
+        /* Specific override for times in dayGrid view */
+        .fc-daygrid-event .fc-time {
+            color: black !important; /* Ensure time is black in dayGrid view */
+        }
+
+        /* Specific override for list view */
+        .fc-list-event-time {
+            color: black !important; /* Ensure time is black in list view */
+}
+
+        /* Common navigation button styles */
+        .nav-button {
+        background-color: transparent;
+        border: none; /* Remove border for all nav buttons */
+        padding: 2.5px 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        color: black;
+        transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #ececec; /* Subtle hover effect for white buttons */
+            z-index: 2;
+        }
+
+        /* Specific styles for Sign In and Register buttons */
+        .nav-button-signin {
+            background-color: #F2F2F7;
+            border: 1px solid black; /* Keep a border for these */
+            z-index: 2;
+        }
+
+        .nav-button-signin:hover {
+            background-color: #d9d9e7;
+            z-index: 2;
+        }
+
+        .nav-button-register {
+            background-color: #F7CDA0;
+            border: 1px solid black; /* Keep a border for these */
+            z-index: 2;
+        }
+
+        .nav-button-register:hover {
+            background-color: #ECB171;
+            z-index: 2;
+        }
+
+        /* Navigation Bar Logo */
+        .navbar-logo {
+            margin-left: -10px;
+            margin-bottom: 3px;
+            cursor: pointer;
+            z-index:2
+        }
+
+        
+    </style>
 </head>
-<body>
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Welcome to the CollegeUnify Application</h1>
+<body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
+    <!-- Navigation Bar -->
+    <div style="background-color: white; padding: 10px; position: relative; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 70px; z-index: 2;">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;  z-index: 2;">
+            <!-- Logo (Now as a Button) -->
+            <a href="/dashboard" class="navbar-logo">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
+            </a>
+            <div style="display: flex; gap: 15px; margin-right: 10px; z-index:2">
+                <button onclick="location.href='#chat'" class="nav-button">Chat</button>
+                <button onclick="location.href='#resources'" class="nav-button">Resources</button>
+                <button onclick="location.href='/tasks'" class="nav-button">My Tasks</button>
+                <button onclick="location.href='/dashboard'" class="nav-button">Dashboard</button>
+                <button onclick="location.href='#settings'" class="nav-button nav-button-signin">Settings</button>
+                <button onclick="location.href='/logout'" class="nav-button nav-button-register">Logout</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Button to go to Task Management page -->
-    <a href="/tasks" class="btn btn-primary mb-3">Go to Task Management</a>
+    <div style="background-color: white; margin: 20px auto; max-width: 900px; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <div id="calendar"></div>
+    </div>
     
-    <!-- Logout Button -->
-    <a href ="/logout" class="btn btn-danger mb-3">Logout</a>
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Task Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="eventModalBody">
+                    <!-- Task details will be dynamically inserted here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
-    <!-- Other sections for home page can be added here -->
-</div>
 
-<!-- Include jQuery and Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-6o8NifL1HF5Ph9UlI5zzgbZ6QLsFS26jlV4TrtJ2eWfyA1jEWHabvhB5YDbxTm8A"
-        crossorigin="anonymous"></script>
+    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
 
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek', // Set the initial view
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: function (info, successCallback, failureCallback) {
+    fetch('/tasks/api') // Fetch tasks from the server
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch tasks');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const events = [];
+            
+            data.forEach(task => {
+                if (task.type === 'class' && task.repeatPattern) {
+                    // Handle repeating events for class type
+                    addRepeatingEvents(task, events, info.start, info.end);
+                } else {
+                    // Add non-repeating or single-instance tasks
+                    let start = null;
+                    let end = null;
+                    let allDay = true; // Default to all-day unless we have times
+
+                    if (task.dueDate && task.dueTime) {
+                        start = `${task.dueDate}T${task.dueTime}`;
+                        allDay = false;
+                    } else if (task.eventDate && task.startTime) {
+                        start = `${task.eventDate}T${task.startTime}`;
+                        end = task.endTime ? `${task.eventDate}T${task.endTime}` : null;
+                        allDay = false;
+                    }
+
+                    events.push({
+                        id: task.id,
+                        title: `${task.title} (${task.type})`, // Display title with type
+                        start: start,
+                        end: end,
+                        description: task.description || '',
+                        allDay: allDay,
+                        extendedProps: {
+                            type: task.type, // Include type for later use
+                            priority: task.priority, // Include other details
+                            repeatPattern: task.repeatPattern,
+                            repeatDays: task.repeatDays,
+                            startDate: task.startDate,
+                            endDate: task.endDate,
+                            eventDate: task.eventDate,
+                            dueDate: task.dueDate,
+                            dueTime: task.dueTime,
+                            startTime: task.startTime,
+                            endTime: task.endTime
+                        },
+                        className: `event-${task.type.toLowerCase()}` // Add class for styling
+                    });
+                }
+            });
+
+            successCallback(events);
+        })
+        .catch(error => {
+            console.error('Error fetching tasks:', error);
+            failureCallback(error);
+        });
+},
+
+        eventClick: function (info) {
+    // Get task details from the event
+    const task = info.event.extendedProps;
+
+    let modalContent = `<p><strong>Title:</strong> ${info.event.title}</p>`;
+    modalContent += `<p><strong>Description:</strong> ${task.description || 'N/A'}</p>`;
+
+    if(task.type === 'homework' || task.type === 'project') {
+            modalContent += `<p><strong>Priority:</strong> ${task.priority || 'N/A'}</p>`;
+            modalContent += `<p><strong>Due Date:</strong> ${task.dueDate || 'N/A'}</p>`;
+            modalContent += `<p><strong>Due Time:</strong> ${task.dueTime || 'N/A'}</p>`;
+              }
+    if(task.type === 'test'){
+            modalContent += `<p><strong>Priority:</strong> ${task.priority || 'N/A'}</p>`;
+            modalContent += `<p><strong>Event Date:</strong> ${task.eventDate || 'N/A'}</p>`;
+            modalContent += `<p><strong>Start Time:</strong> ${task.startTime || 'N/A'}</p>`;
+            modalContent += `<p><strong>End Time:</strong> ${task.endTime || 'N/A'}</p>`;
+    }
+
+    if (task.type ==='personal'){
+            modalContent += `<p><strong>Event Date:</strong> ${task.eventDate || 'N/A'}</p>`;
+            modalContent += `<p><strong>Start Time:</strong> ${task.startTime || 'N/A'}</p>`;
+            modalContent += `<p><strong>End Time:</strong> ${task.endTime || 'N/A'}</p>`;
+    }
+
+    if(task.type === 'class'){
+            modalContent += `<p><strong>Start Time:</strong> ${task.startTime || 'N/A'}</p>`;
+            modalContent += `<p><strong>End Time:</strong> ${task.endTime || 'N/A'}</p>`;
+            modalContent += `<p><strong>Frequency:</strong> ${task.repeatPattern || 'N/A'}</p>`;
+            modalContent += `<p><strong>Repeat Days:</strong> ${task.repeatDays ? task.repeatDays.join(', ') : 'N/A'}</p>`;
+            modalContent += `<p><strong>Start Date:</strong> ${task.startDate || 'N/A'}</p>`;
+            modalContent += `<p><strong>End Date:</strong> ${task.endDate || 'N/A'}</p>`;
+    }
+
+    // Populate the modal and show it
+    document.getElementById('eventModalBody').innerHTML = modalContent;
+    $('#eventModal').modal('show');
+}
+
+    });
+
+    calendar.render();
+});
+
+/**
+ * Add repeating events for a task based on its pattern.
+ */
+function addRepeatingEvents(task, events, viewStart, viewEnd) {
+    const startDate = new Date(task.startDate); // Class start date
+    const endDate = task.endDate ? new Date(task.endDate) : null; // Class end date (optional)
+    const repeatDays = task.repeatDays || []; // Days of the week the task repeats (e.g., ["Monday", "Wednesday"])
+    const repeatPattern = task.repeatPattern.toLowerCase(); // "daily", "weekly", etc.
+    const taskStartTime = task.startTime || '00:00:00';
+    const taskEndTime = task.endTime || '23:59:59';
+
+    // Convert repeat days to numeric representation (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    const dayMap = {
+        Sunday: 0,
+        Monday: 1,
+        Tuesday: 2,
+        Wednesday: 3,
+        Thursday: 4,
+        Friday: 5,
+        Saturday: 6
+    };
+    const repeatDayNumbers = repeatDays.map(day => dayMap[day]);
+
+    // Loop through the view range to generate repeating events
+    let currentDate = new Date(viewStart);
+
+    while (currentDate <= viewEnd) {
+        // Skip dates outside the task's date range
+        if (currentDate < startDate || (endDate && currentDate > endDate)) {
+            currentDate.setDate(currentDate.getDate() + 1); // Move to next day
+            continue;
+        }
+
+        // Check if the current date matches the repeat pattern
+        const isMatchingDay =
+            repeatPattern === 'daily' || // Always matches for daily
+            (repeatPattern === 'weekly' && repeatDayNumbers.includes(currentDate.getDay())); // Matches for weekly
+
+        if (isMatchingDay) {
+            // Add event for the matching day
+            const eventStart = `${currentDate.toISOString().split('T')[0]}T${taskStartTime}`;
+            const eventEnd = `${currentDate.toISOString().split('T')[0]}T${taskEndTime}`;
+            events.push({
+    id: task.id,
+    title: `${task.title} (${task.type})`, // Include type in title
+    start: eventStart,
+    end: eventEnd,
+    description: task.description || '',
+    allDay: false,
+    className: `event-${task.type.toLowerCase()}`, // Apply class for styling
+    extendedProps: {
+        type: task.type,
+        priority: task.priority,
+        repeatPattern: task.repeatPattern,
+        repeatDays: task.repeatDays,
+        startDate: task.startDate,
+        endDate: task.endDate,
+        eventDate: task.eventDate,
+        dueDate: task.dueDate,
+        dueTime: task.dueTime,
+        startTime: task.startTime,
+        endTime: task.endTime
+    }
+});
+        }
+
+        // Move to the next day
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+}
+
+
+    </script>
 </body>
 </html>
