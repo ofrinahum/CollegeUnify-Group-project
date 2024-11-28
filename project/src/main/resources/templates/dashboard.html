@@ -27,6 +27,30 @@
         display: block; /* Default block-level layout */
         }
 
+        .event-study {
+    background-color: #ffe6e6;
+    border-color: #ffb3b3;
+    color: black !important; /* Ensure text is black */
+}
+
+.fc-event {
+    white-space: normal; /* Allow text to wrap */
+    overflow-wrap: break-word; /* Break long words if needed */
+    word-wrap: break-word; /* Ensure compatibility with older browsers */
+    line-height: 1.2; /* Improve text readability */
+    padding: 2px; /* Add some padding for spacing */
+    font-size: 12px; /* Adjust font size for better visibility */
+}
+
+.fc-timegrid-event {
+    z-index: 2;
+    border: 1px solid #333; /* Adjust border color for better visibility */
+}
+.fc-timegrid-event .fc-event-time {
+    font-weight: bold; /* Make times stand out more */
+}
+
+
         /* Homework: Blue */
             .event-homework {
             background-color: #edbf8e;
@@ -197,12 +221,19 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek', // Set the initial view
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
+    initialView: 'timeGridWeek', // Set the initial view
+    headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    slotDuration: '00:15:00', // 15-minute intervals
+    slotLabelInterval: '01:00', // Labels every hour
+    slotLabelFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true // Adjust for 12-hour or 24-hour format
+    },
         events: function (info, successCallback, failureCallback) {
     fetch('/tasks/api') // Fetch tasks from the server
         .then(response => {
@@ -215,49 +246,49 @@
             const events = [];
             
             data.forEach(task => {
-                if (task.type === 'class' && task.repeatPattern) {
-                    // Handle repeating events for class type
-                    addRepeatingEvents(task, events, info.start, info.end);
-                } else {
-                    // Add non-repeating or single-instance tasks
-                    let start = null;
-                    let end = null;
-                    let allDay = true; // Default to all-day unless we have times
+    if (task.type === 'class' && task.repeatPattern) {
+        addRepeatingEvents(task, events, info.start, info.end);
+    } else {
+        let start = null;
+        let end = null;
+        let allDay = true; // Default to all-day unless we have times
 
-                    if (task.dueDate && task.dueTime) {
-                        start = `${task.dueDate}T${task.dueTime}`;
-                        allDay = false;
-                    } else if (task.eventDate && task.startTime) {
-                        start = `${task.eventDate}T${task.startTime}`;
-                        end = task.endTime ? `${task.eventDate}T${task.endTime}` : null;
-                        allDay = false;
-                    }
+        if (task.dueDate && task.dueTime) {
+            start = `${task.dueDate}T${task.dueTime}`;
+            allDay = false;
+        } else if (task.eventDate && task.startTime) {
+            start = `${task.eventDate}T${task.startTime}`;
+            end = task.endTime ? `${task.eventDate}T${task.endTime}` : null;
+            allDay = false;
+        }
 
-                    events.push({
-                        id: task.id,
-                        title: `${task.title} (${task.type})`, // Display title with type
-                        start: start,
-                        end: end,
-                        description: task.description || '',
-                        allDay: allDay,
-                        extendedProps: {
-                            type: task.type, // Include type for later use
-                            priority: task.priority, // Include other details
-                            repeatPattern: task.repeatPattern,
-                            repeatDays: task.repeatDays,
-                            startDate: task.startDate,
-                            endDate: task.endDate,
-                            eventDate: task.eventDate,
-                            dueDate: task.dueDate,
-                            dueTime: task.dueTime,
-                            startTime: task.startTime,
-                            endTime: task.endTime
-                        },
-                        className: `event-${task.type.toLowerCase()}` // Add class for styling
-                    });
-                }
-            });
+        events.push({
+            id: task.id,
+            title: `${task.title} (${task.type})`,
+            start: start,
+            end: end,
+            description: task.description || '',
+            allDay: allDay,
+            extendedProps: {
+                type: task.type,
+                priority: task.priority,
+                repeatPattern: task.repeatPattern,
+                repeatDays: task.repeatDays,
+                startDate: task.startDate,
+                endDate: task.endDate,
+                eventDate: task.eventDate,
+                dueDate: task.dueDate,
+                dueTime: task.dueTime,
+                startTime: task.startTime,
+                endTime: task.endTime
+            },
+            className: `event-${task.type.toLowerCase()}`
+        });
 
+        // Add study events
+        addStudyEvents(task, events);
+    }
+});
             successCallback(events);
         })
         .catch(error => {
@@ -354,7 +385,7 @@ function addRepeatingEvents(task, events, viewStart, viewEnd) {
             const eventEnd = `${currentDate.toISOString().split('T')[0]}T${taskEndTime}`;
             events.push({
     id: task.id,
-    title: `${task.title} (${task.type})`, // Include type in title
+    title: `${task.title} (${task.type === 'class' ? 'repeating' : task.type})`, // Include type in title
     start: eventStart,
     end: eventEnd,
     description: task.description || '',
@@ -380,6 +411,125 @@ function addRepeatingEvents(task, events, viewStart, viewEnd) {
         currentDate.setDate(currentDate.getDate() + 1);
     }
 }
+
+/**
+ * Add study events for a task based on its priority.
+ */
+ function addStudyEvents(task, events) {
+    const priorityToHours = {
+        low: 5,
+        medium: 10,
+        high: 15
+    };
+
+    // Skip study time for personal and class types
+    if (task.type === 'personal' || task.type === 'class') {
+        return;
+    }
+
+    const totalStudyHours = priorityToHours[task.priority?.toLowerCase()] || 0; // Default to 0 if no priority
+    if (totalStudyHours === 0) return;
+
+    const studyStartDate = new Date(task.dueDate || task.eventDate);
+    studyStartDate.setDate(studyStartDate.getDate() - 1); // Start allocating from the day before the event
+
+    const studyDays = 3; // Spread study time over 3 days
+    const dailyStudyHours = Math.ceil(totalStudyHours / studyDays); // Hours per day
+
+    for (let day = 0; day < studyDays; day++) {
+        const studyDate = new Date(studyStartDate);
+        studyDate.setDate(studyDate.getDate() - day);
+
+        // Find free time slots for the day
+        const freeSlots = getFreeTimeSlots(events, studyDate);
+
+        let remainingHours = dailyStudyHours;
+
+        // Fit study sessions into free slots
+        for (const slot of freeSlots) {
+            if (remainingHours <= 0) break;
+
+            const slotStart = new Date(slot.start);
+            const slotEnd = new Date(slot.end);
+            const availableHours = (slotEnd - slotStart) / (1000 * 60 * 60);
+
+            // Allocate the minimum between remaining hours and available slot time
+            const sessionHours = Math.min(remainingHours, availableHours);
+            const sessionEnd = new Date(slotStart);
+            sessionEnd.setHours(slotStart.getHours() + sessionHours);
+
+            // Define title based on the task type
+            let titlePrefix = 'Study for';
+            if (task.type === 'homework') {
+                titlePrefix = 'Work on Homework';
+            } else if (task.type === 'project') {
+                titlePrefix = 'Work on Project';
+            }
+
+            events.push({
+                id: `${task.id}-study-${day}-${slot.start}`,
+                title: `${titlePrefix}: ${task.title}`,
+                start: slotStart.toISOString(),
+                end: sessionEnd.toISOString(),
+                description: `Allocated time for ${task.title} (${task.priority} priority)`,
+                className: 'event-study', // Class for styling
+                allDay: false,
+                extendedProps: {
+                    relatedTask: task.id,
+                    priority: task.priority
+                }
+            });
+
+            // Reduce remaining hours
+            remainingHours -= sessionHours;
+        }
+    }
+}
+
+/**
+ * Get free time slots for a specific day based on existing events.
+ */
+function getFreeTimeSlots(events, date) {
+    const dayStart = new Date(date);
+    dayStart.setHours(8, 0, 0, 0); // Start of the day (8 AM)
+    const dayEnd = new Date(date);
+    dayEnd.setHours(22, 0, 0, 0); // End of the day (10 PM)
+
+    // Filter events for the specific day
+    const dayEvents = events.filter(event => {
+        const eventStart = new Date(event.start);
+        const eventEnd = new Date(event.end);
+        return eventStart.toDateString() === date.toDateString() ||
+               eventEnd.toDateString() === date.toDateString();
+    });
+
+    // Sort events by start time
+    dayEvents.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+    // Find free slots
+    const freeSlots = [];
+    let lastEnd = dayStart;
+
+    for (const event of dayEvents) {
+        const eventStart = new Date(event.start);
+
+        // Check if there is a gap between the last end time and the current event's start time
+        if (eventStart > lastEnd) {
+            freeSlots.push({ start: lastEnd, end: eventStart });
+        }
+
+        // Update lastEnd to the maximum of its current value or the event's end time
+        lastEnd = new Date(Math.max(lastEnd, new Date(event.end)));
+    }
+
+    // Add the slot between the last event and the end of the day
+    if (lastEnd < dayEnd) {
+        freeSlots.push({ start: lastEnd, end: dayEnd });
+    }
+
+    return freeSlots;
+}
+
 
 
     </script>
