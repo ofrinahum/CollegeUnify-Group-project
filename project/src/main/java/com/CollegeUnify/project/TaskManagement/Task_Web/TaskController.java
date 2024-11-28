@@ -48,24 +48,71 @@ public class TaskController {
     // Add a new task
     @PostMapping("/add")
     public String addTask(@ModelAttribute Task task, Principal principal) {
-        System.out.println("Task received: " + task); // Debug log
         String username = principal.getName();
         User user = userRepository.findByEmail(username);
     
         if (user == null) {
-            throw new IllegalStateException("Authenticated user not found.");
+            throw new IllegalStateException("User not authenticated.");
         }
     
+        // Add the task
         taskService.save(task, user.getId());
+    
+        // Redirect to tasks page
         return "redirect:/tasks";
     }
     
-    // Mark a task as completed
-    @PostMapping("/{taskId}/complete")
-    public String completeTask(@PathVariable Long taskId) {
-        taskService.markAsCompleted(taskId);
-        return "redirect:/tasks";
+    
+    @PutMapping("/{taskId}/update")
+public String updateTask(@PathVariable Long taskId, @ModelAttribute Task task, Principal principal) {
+    String username = principal.getName();
+    User user = userRepository.findByEmail(username);
+
+    if (user == null) {
+        throw new IllegalStateException("User not authenticated.");
     }
+
+    // Ensure the task exists
+    Task existingTask = tasksDao.findById(taskId);
+    if (existingTask == null) {
+        throw new IllegalStateException("Task not found.");
+    }
+
+    // Update the task
+    task.setId(taskId);
+    tasksDao.update(task);
+
+    // Redirect to tasks page
+    return "redirect:/tasks";
+}
+
+    
+    
+    // Mark a task as completed
+    // Fetch completed tasks
+@GetMapping("/api/completed")
+@ResponseBody
+public List<Task> getCompletedTasks(Principal principal) {
+    String username = principal.getName();
+    User user = userRepository.findByEmail(username);
+
+    if (user == null) {
+        throw new IllegalStateException("Authenticated user not found in the database.");
+    }
+
+    return taskService.findCompletedTasksByUserId(user.getId());
+}
+
+// Mark a task as completed
+@PostMapping("/{taskId}/complete")
+public String completeTask(@PathVariable Long taskId) {
+    boolean success = taskService.markAsCompleted(taskId);
+    if (!success) {
+        throw new IllegalStateException("Failed to mark the task as completed.");
+    }
+    return "redirect:/tasks"; // Redirects to the tasks page
+}
+
 
     // Delete a task
     @PostMapping("/{taskId}/delete")
@@ -84,35 +131,27 @@ public ResponseEntity<Task> getTaskById(@PathVariable Long taskId) {
     return ResponseEntity.ok(task);
 }
 
-@PutMapping("/{taskId}/update")
-@ResponseBody
-public ResponseEntity<String> updateTask(@PathVariable Long taskId, @RequestBody Task updatedTask) {
-    Task existingTask = tasksDao.findById(taskId);
-    if (existingTask == null) {
-        return ResponseEntity.notFound().build();
-    }
-
-    updatedTask.setId(taskId);
-    boolean success = tasksDao.update(updatedTask);
-    if (success) {
-        return ResponseEntity.ok("Task updated successfully");
-    } else {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update task");
-    }
-}
-
-
     // Fetch tasks as JSON for the calendar
     @GetMapping("/api")
-    @ResponseBody
-    public List<Task> getTasksForUser(Principal principal) {
-        String username = principal.getName();
-        User user = userRepository.findByEmail(username);
+@ResponseBody
+public List<Task> getIncompleteTasks(Principal principal) {
+    String username = principal.getName();
+    User user = userRepository.findByEmail(username);
 
-        if (user == null) {
-            throw new IllegalStateException("Authenticated user not found in the database.");
-        }
-
-        return taskService.findByUserId(user.getId());
+    if (user == null) {
+        throw new IllegalStateException("Authenticated user not found in the database.");
     }
+
+    return taskService.findIncompleteTasksByUserId(user.getId());
+}
+
+@PostMapping("/{taskId}/incomplete")
+public String markAsIncomplete(@PathVariable Long taskId) {
+    boolean success = taskService.markAsIncomplete(taskId);
+    if (!success) {
+        throw new IllegalStateException("Failed to mark the task as incomplete.");
+    }
+    return "redirect:/tasks"; // Redirects to the tasks page
+}
+
 }

@@ -46,6 +46,21 @@ public class TaskService {
         return tasksDao.markAsCompleted(taskId);
     }
 
+    public List<Task> findCompletedTasksByUserId(Long userId) {
+        return tasksDao.findCompletedByUserId(userId);
+    }
+
+    // Fetch incomplete tasks for a specific user
+public List<Task> findIncompleteTasksByUserId(Long userId) {
+    return tasksDao.findIncompleteByUserId(userId);
+}
+
+// Mark a task as incomplete
+public boolean markAsIncomplete(Long taskId) {
+    return tasksDao.markAsIncomplete(taskId);
+}
+
+
     // Validate a task before saving
     public void validateTask(Task task) {
         String type = task.getType();

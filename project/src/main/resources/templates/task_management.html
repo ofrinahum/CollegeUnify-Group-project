@@ -3,34 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Management</title>
+    <title>My Tasks</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.0/main.min.css">
+    <style>
+        body {
+            background-color: #F6F5FF;
+        }
+
+        /* Navigation Bar Logo */
+        .navbar-logo {
+            margin-left: -10px;
+            cursor: pointer;
+            z-index:2
+        }
+
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            padding: 2.5px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button:hover {
+            background-color: #ececec;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-signin {
+            background-color: #F2F2F7;
+            border: 1px solid black;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-signin:hover {
+            background-color: #d9d9e7;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-register {
+            background-color: #F7CDA0;
+            border: 1px solid black;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-register:hover {
+            background-color: #ECB171;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+    
+        .task-container {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            font-family: Arial, sans-serif;
+        }
+    
+        .task-header {
+            color: #34145C;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-family: Arial, sans-serif;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* Ensures even column spacing */
+        }
+    
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #000000;
+            color: #34145C; /* Purple text color */
+        }
+    
+        table th {
+            background-color: #f6f6fa;
+            font-weight: bold;
+        }
+    
+        table tr:nth-child(odd) {
+            background-color: #f9f8fd; /* Set light purple background for odd rows */
+            border-bottom: 1px solid #ddd;
+        }
+    
+        table tr:nth-child(even) {
+            background-color: #f9f8ff; /* Set light purple background for even rows */
+            border-bottom: 1px solid #ddd;
+        }
+    
+        table .task-actions {
+            text-align: center; /* Center aligns buttons under "Actions" */
+        }
+    
+        .task-actions .btn {
+            display: inline-block;
+            margin: 2px; /* Small margin between buttons */
+            font-size: 12px;
+        }
+    
+        .task-list, .completed-task-list {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">Task Management</h1>
-    
-        <!-- Task List Section -->
-        <div class="mt-4">
-            <h2>Saved Tasks</h2>
-            <div id="task-list" class="row">
-                <!-- Tasks will be dynamically loaded here -->
+    <!-- Navigation Bar -->
+    <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
+        <!-- Navigation Bar -->
+        <div style="background-color: white; position: relative; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 70px; z-index: 2;">
+            <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;">
+                <a href="/dashboard" class="navbar-logo">
+                    <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
+                </a>
+                <div style="display: flex; gap: 15px; margin-right: 10px; z-index:2">
+                    <button onclick="location.href='#chat'" class="nav-button">Chat</button>
+                    <button onclick="location.href='#resources'" class="nav-button">Resources</button>
+                    <button onclick="location.href='/task_management'" class="nav-button">My Tasks</button>
+                    <button onclick="location.href='/dashboard'" class="nav-button">Dashboard</button>
+                    <button onclick="location.href='#settings'" class="nav-button nav-button-signin">Settings</button>
+                    <button onclick="location.href='/logout'" class="nav-button nav-button-register">Logout</button>
+                </div>
             </div>
         </div>
+    <div class="container mt-5">
+        <!-- My Tasks Section -->
+        <h1 class="task-header">My Tasks</h1>
+        <div class="task-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Type</th>
+                        <th>Due Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="task-list">
+                    <!-- Dynamically added task rows will go here -->
+                </tbody>
+            </table>
+            <button 
+            class="btn btn-primary mt-3" 
+            data-toggle="modal" 
+            data-target="#taskModal" 
+            onclick="resetTaskForm()">Create New Task</button>
+        </div>
+    </div>
+
+    <!-- Completed Tasks Section -->
+    <div class="container mt-5">
+        <h1 class="task-header">Completed Tasks</h1>
+        <div class="task-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="completed-task-list">
+                    <!-- Dynamically added completed task rows will go here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
     
-        <!-- Existing Calendar Section -->
-        <div id="calendar" class="mb-4"></div>
-
-    <!-- Create New Task Button -->
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#taskModal">Create New Task</button>
-
+        
     <!-- Modal for Task Form -->
     <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="taskForm" method="POST" action="/tasks/add">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    <input type="hidden" id="taskId" name="taskId" value="">
+
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="taskModalLabel">Add Task</h5>
@@ -241,45 +407,55 @@ document.getElementById('classRepeatPattern').addEventListener('change', functio
         return;
     }
 
-    submitButton.addEventListener('click', function () {
-        console.log("Button clicked!");
-        form.submit(); // Forces form submission
-    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
     const taskList = document.getElementById('task-list');
+    const completedTaskList = document.getElementById('completed-task-list');
 
-    // Fetch tasks from API
+    // Fetch and display active tasks
     fetch('/tasks/api')
         .then(response => response.json())
         .then(tasks => {
             tasks.forEach(task => {
-                const taskCard = document.createElement('div');
-                taskCard.className = 'col-md-4 mb-3';
-
-                taskCard.innerHTML = `
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">${task.title}</h5>
-                        <p class="card-text">${task.description}</p>
-                        <p><strong>Priority:</strong> ${task.priority || 'N/A'}</p>
-                        <p><strong>Type:</strong> ${task.type || 'N/A'}</p>
-                        <p><strong>Due Date:</strong> ${task.dueDate || 'N/A'}</p>
-                        <div class="d-flex">
-                            <button class="btn btn-primary btn-sm mr-2" onclick="openEditModal(${task.id})">Edit</button>
-                            <button onclick="deleteTask(${task.id})" class="btn btn-danger btn-sm">Delete</button>
-                        </div>
-                    </div>
-                </div>
-              `;
-
-
-                taskList.appendChild(taskCard);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.priority}</td>
+                    <td>${task.type}</td>
+                    <td>${task.dueDate}</td>
+                    <td class="task-actions">
+                        <button class="btn btn-primary btn-sm" onclick="openEditModal(${task.id})">Edit</button>
+                        <button class="btn btn-success btn-sm" onclick="markTaskAsComplete(${task.id})">Complete</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id})">Delete</button>
+                    </td>
+                `;
+                taskList.appendChild(row);
             });
-        })
-        .catch(error => console.error('Error fetching tasks:', error));
+        });
+
+    // Fetch and display completed tasks
+    fetch('/tasks/api/completed')
+        .then(response => response.json())
+        .then(completedTasks => {
+            completedTasks.forEach(task => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.description}</td>
+                    <td>${task.type}</td>
+                    <td class="task-actions">
+                        <button class="btn btn-warning btn-sm" onclick="markTaskAsIncomplete(${task.id})">Mark As Incomplete</button>
+                    </td>
+                `;
+                completedTaskList.appendChild(row);
+            });
+        });
 });
+
+
+
+
 
 function deleteTask(taskId) {
     if (!confirm("Are you sure you want to delete this task?")) {
@@ -312,46 +488,181 @@ function deleteTask(taskId) {
 }
 
 
-function fetchTasks() {
-    const taskList = document.getElementById('task-list');
-    const spinner = document.getElementById('loading-spinner');
+// Open Edit Modal
+function openEditModal(taskId) {
+    fetch(`/tasks/api/${taskId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch task with ID ${taskId}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(task => {
+            console.log("Fetched task data for editing:", task);
 
-    spinner.style.display = 'block'; // Show spinner
-    taskList.innerHTML = ''; // Clear the existing tasks
+            document.getElementById('taskModalLabel').textContent = 'Edit Task';
+            // Populate form fields
+            document.getElementById('taskId').value = task.id || '';
+            document.getElementById('title').value = task.title || '';
+            document.getElementById('description').value = task.description || '';
+            document.getElementById('priority').value = task.priority || 'low';
+            document.getElementById('type').value = task.type || '';
 
-    fetch('/tasks/api')
-        .then(response => response.json())
-        .then(tasks => {
-            spinner.style.display = 'none'; // Hide spinner
-            tasks.forEach(task => {
-                const taskCard = document.createElement('div');
-                taskCard.className = 'col-md-4 mb-3';
-                taskCard.setAttribute('data-task-id', task.id);
+            // Toggle fields based on task type
+            toggleFields();
 
-                taskCard.innerHTML = `
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">${task.title}</h5>
-                            <p class="card-text">${task.description}</p>
-                            <p><strong>Priority:</strong> ${task.priority || 'N/A'}</p>
-                            <p><strong>Type:</strong> ${task.type || 'N/A'}</p>
-                            <p><strong>Due Date:</strong> ${task.dueDate || 'N/A'}</p>
-                            <div class="d-flex">
-                                <button onclick="deleteTask(${task.id})" class="btn btn-danger btn-sm">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+            // Populate conditional fields
+            if (task.type === 'homework' || task.type === 'project') {
+                document.getElementById('dueDate').value = task.dueDate || '';
+                document.getElementById('dueTime').value = task.dueTime || '';
+            } else if (task.type === 'test' || task.type === 'personal') {
+                document.getElementById('eventDate').value = task.eventDate || '';
+                document.getElementById('startTime').value = task.startTime || '';
+                document.getElementById('endTime').value = task.endTime || '';
+            } else if (task.type === 'class') {
+                document.getElementById('classStartDate').value = task.startDate || '';
+                document.getElementById('classEndDate').value = task.endDate || '';
+                document.getElementById('classRepeatPattern').value = task.repeatPattern || '';
 
-                taskList.appendChild(taskCard);
-            });
+                // Populate repeat days
+                const repeatDays = task.repeatDays || [];
+                const checkboxes = document.querySelectorAll('#repeatDaysClass input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = repeatDays.includes(checkbox.value);
+                });
+            }
+
+            // Show the modal
+            $('#taskModal').modal('show');
         })
         .catch(error => {
-            spinner.style.display = 'none'; // Hide spinner
-            console.error('Error fetching tasks:', error);
+            console.error('Error opening edit modal:', error);
+            alert('Failed to load task details for editing.');
         });
 }
 
+// Form Submission for Add/Edit
+document.getElementById('taskForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const submitButton = document.querySelector('.btn-success');
+    submitButton.disabled = true; // Disable the button to prevent multiple submissions
+
+    const taskId = document.getElementById('taskId').value.trim();
+    const formData = new FormData(this);
+
+    let url = '/tasks/add'; // Default to adding a new task
+    let method = 'POST';
+
+    if (taskId) { // If taskId exists, update the task
+        url = `/tasks/${taskId}/update`;
+        method = 'PUT';
+    }
+
+    try {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value,
+            },
+            body: formData,
+        });
+
+
+        console.log("Task saved successfully");
+        $('#taskModal').modal('hide'); // Close the modal
+        location.href = '/tasks'; // Redirect to tasks page
+
+    } finally {
+        submitButton.disabled = false; // Re-enable the button
+    }
+});
+
+function markTaskAsComplete(taskId) {
+    if (!confirm("Mark this task as completed?")) {
+        return; // User canceled
+    }
+
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+    fetch(`/tasks/${taskId}/complete`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log(`Task with ID ${taskId} marked as completed.`);
+                location.reload(); // Reload the page to update the lists
+            } else {
+                return response.text().then(errorMessage => {
+                    throw new Error(errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+            alert('Failed to mark the task as completed. Reason: ' + error.message);
+        });
+}
+
+
+function markTaskAsIncomplete(taskId) {
+    if (!confirm("Move this task back to Saved Tasks?")) {
+        return; // User canceled
+    }
+
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+    fetch(`/tasks/${taskId}/incomplete`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+                location.href = '/tasks'; // Reload the tasks page
+            } else {
+                return response.text().then(errorMessage => {
+                    throw new Error(errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+            alert('Failed to mark the task as incomplete. Reason: ' + error.message);
+        });
+}
+
+
+// Fetch completed tasks on page load
+function resetTaskForm() {
+    // Reset the modal title
+    document.getElementById('taskModalLabel').textContent = 'Add New Task';
+
+    // Clear all input fields
+    document.getElementById('taskForm').reset();
+
+    // Reset any hidden fields
+    document.getElementById('taskId').value = '';
+    document.getElementById('dueDate').value = '';
+    document.getElementById('dueTime').value = '';
+    document.getElementById('eventDate').value = '';
+    document.getElementById('startTime').value = '';
+    document.getElementById('endTime').value = '';
+    document.getElementById('classStartDate').value = '';
+    document.getElementById('classEndDate').value = '';
+
+    // Reset dropdowns to default
+    document.getElementById('type').value = 'homework';
+    document.getElementById('priority').value = 'low';
+    document.getElementById('classRepeatPattern').value = '';
+
+    // Hide conditionally displayed fields
+    toggleFields();
+}
 
     </script>
 </body>
