@@ -18,6 +18,23 @@
             display: block; /* Default block-level layout */
         }
 
+        .success-banner {
+        position: absolute;
+        top: 70px; /* Below the navbar */
+        left: 0;
+        width: 100%;
+        background-color: #f8d7da; /* Light red for error */
+        color: #721c24; /* Dark red text */
+        border: 1px solid #f5c6cb;
+        text-align: center;
+        padding: 10px 15px;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+        z-index: 2;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          }
+
+
         /* Common navigation button styles */
         .nav-button {
             background-color: transparent;
@@ -200,6 +217,11 @@
             </div>
         </div>
     </div>
+    
+    <div id="error-banner" style="display: none;" class="success-banner">
+        Login error: Username or password is incorrect.
+    </div>
+    
 
     <!-- Login Form -->
     <div class="form-overlay">
@@ -231,5 +253,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('error')) { // Check if an "error" parameter exists in the URL
+                document.getElementById('error-banner').style.display = 'block';
+            }
+        });
+    </script>
+    
 </body>
 </html>
