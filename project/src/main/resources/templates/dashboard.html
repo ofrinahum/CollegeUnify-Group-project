@@ -13,18 +13,17 @@
 
     <style>
     
-        /* Background blur effect */
         body {
         margin: 0;
         font-family: Arial, sans-serif;
+        background-color: linear-gradient(90deg, rgba(227, 207, 234, 1), rgba(240, 225, 246, 1));
         background-image: url('/images/registerBackground.png'); /* Add the path to your image */
-        background-size: cover; /* Ensure the background image covers the entire page */
-        background-position: center; /* Center the image */
+        background-size: cover; /* Ensure the background image covers the entire viewport */
+        background-position: center center; /* Center the image */
         background-repeat: no-repeat; /* Prevent the image from repeating */
-        height: 100vh;
-        overflow: hidden;
-        /* Remove flexbox styles that center content */
-        display: block; /* Default block-level layout */
+        height: 100%; /* Set the height to always fill the viewport */
+        width: 100vw; /* Ensure it fills the full width */
+        overflow: hidden; /* Prevent scrollbars if not needed */
         }
 
         .event-study {
@@ -32,6 +31,11 @@
     border-color: #697e67;
     color: black !important; /* Ensure text is black */
 }
+
+    .event-study:hover{
+    background-color: #a1b9a2; /* Adjust hover color */
+    cursor: pointer; /* Show pointer cursor */
+    }
 
 .fc-event {
     white-space: normal; /* Allow text to wrap */
@@ -42,49 +46,61 @@
     font-size: 12px; /* Adjust font size for better visibility */
 }
 
-.fc-timegrid-event {
-    z-index: 2;
-    border: 1px solid #333; /* Adjust border color for better visibility */
-}
-.fc-timegrid-event .fc-event-time {
-    font-weight: bold; /* Make times stand out more */
-}
-
-
-        /* Homework: Blue */
             .event-homework {
             background-color: #edbf8e;
-            border-color: #806243;
+            border-color: #503d2a;
             color: black !important; /* Ensure text is black */
         }
 
-        /* Project: Green */
+        .event-homework:hover {
+    background-color: #c6a178; /* Adjust hover color */
+    cursor: pointer; /* Show pointer cursor */
+}
         .event-project {
-            background-color: #cfa9f5;
+            background-color: #debdff;
             border-color: #6f508e;
             color: black !important; /* Ensure text is black */
         }
 
+        .event-project:hover {
+    background-color: #b28ae6; /* Adjust hover color */
+    cursor: pointer; /* Show pointer cursor */
+}
+
         /* Test: Red */
         .event-test {
             background-color: #e39797;
-            border-color: #724444;
+            border-color: #3c2323;
             color: black !important; /* Ensure text is black */
         }
+
+        .event-test:hover {
+    background-color: #a77070; /* Adjust hover color */
+    cursor: pointer; /* Show pointer cursor */
+}
 
         /* Personal: Purple */
         .event-personal {
-            background-color: #97aaff;
-            border-color: #404e8b;
+            background-color: #adbcff;
+            border-color: #212746;
             color: black !important; /* Ensure text is black */
         }
 
+        .event-personal:hover {
+    background-color: #6570a9; /* Adjust hover color */
+    cursor: pointer; /* Show pointer cursor */
+}
         /* Class: Orange */
         .event-class {
             background-color: #ede0a5;
             border-color: #766f51;
             color: black !important; /* Ensure text is black */
         }
+
+        .event-class:hover {
+    background-color: #b6ab7d; /* Adjust hover color */
+    cursor: pointer; /* Show pointer cursor */
+}
 
             .fc-event {
             color: black !important; /* Ensure all event text is black */
@@ -170,18 +186,35 @@
             z-index:2
         }
 
+        .cta-button {
+            background-color: #F7CDA0;
+            color: black;
+            font-size: 16px;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 220px;
+            height: 53px;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-left: 60px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background-color: #ECB171;
+        }
         
     </style>
 </head>
 <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
     <!-- Navigation Bar -->
     <div style="background-color: white; padding: 10px; position: relative; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 70px; z-index: 2;">
-        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;  z-index: 2;">
+        <div style="margin-right: 50px; display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;  z-index: 2;">
             <!-- Logo (Now as a Button) -->
             <a href="/dashboard" class="navbar-logo">
-                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55.5px; height: 50px; margin-left: -8.5px">
             </a>
-            <div style="display: flex; gap: 15px; margin-right: 10px; z-index:2">
+            <div style="display: flex; gap: 15px; margin-right: 18.5px; z-index:2">
                 <button onclick="location.href='#chat'" class="nav-button">Chat</button>
                 <button onclick="location.href='#resources'" class="nav-button">Resources</button>
                 <button onclick="location.href='/tasks'" class="nav-button">My Tasks</button>
@@ -192,9 +225,26 @@
         </div>
     </div>
 
-    <div style="background-color: white; margin: 20px auto; max-width: 900px; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-        <div id="calendar"></div>
+    <div style="display: flex; align-items: flex-start; gap: 20px; margin: 20px;">
+        <!-- Calendar Container -->
+        <div style="
+            background-color: rgba(254, 252, 249, 0.95); 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+            max-width: 1200px; 
+            flex: 3;
+            margin-left: 60px;">
+              <div style="font-family: Arial, sans-serif; font-size: 18px; color: #333; text-align: center;">
+                Here's an overview of your upcoming tasks for:
+            </div>
+            <div id="calendar"></div>
+        </div>
+    
+        <!-- Manage Tasks Button -->
+        <button onclick="location.href='/tasks'" class="cta-button">Manage Tasks</button>
     </div>
+
     
     <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -221,7 +271,7 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'timeGridWeek', // Set the initial view
+    initialView: 'dayGridMonth', // Set the initial view
     headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -233,6 +283,16 @@
         hour: 'numeric',
         minute: '2-digit',
         hour12: true // Adjust for 12-hour or 24-hour format
+    },
+    visibleRange: function(currentDate) {
+        // Calculate the start and end of the current month
+        let start = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        let end = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0); // Last day of the current month
+
+        return {
+            start: start.toISOString().split('T')[0], // Start of the month
+            end: end.toISOString().split('T')[0]     // End of the month
+        };
     },
         events: function (info, successCallback, failureCallback) {
     fetch('/tasks/api') // Fetch tasks from the server
@@ -254,8 +314,16 @@
         let allDay = true; // Default to all-day unless we have times
 
         if (task.dueDate && task.dueTime) {
-            start = `${task.dueDate}T${task.dueTime}`;
-            allDay = false;
+            // Handle due time of 11:59 PM explicitly
+            if (task.dueTime === '23:59:00') {
+                start = `${task.dueDate}T23:59:00`;
+                end = `${task.dueDate}T23:59:59`;; // Avoid setting an explicit end time
+                allDay = false; // Mark as a timed event
+            } else {
+                start = `${task.dueDate}T${task.dueTime}`;
+                end = `${task.dueDate}T${task.dueTime}`;
+                allDay = false;
+            }
         } else if (task.eventDate && task.startTime) {
             start = `${task.eventDate}T${task.startTime}`;
             end = task.endTime ? `${task.eventDate}T${task.endTime}` : null;

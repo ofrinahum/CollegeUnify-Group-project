@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #F6F5FF;
+            background: linear-gradient(rgba(251, 250, 255, 0.75), rgba(243, 232, 255, 0.75));
         }
 
         /* Navigation Bar Logo */
@@ -65,13 +65,14 @@
 
     
         .task-container {
-            background-color: #FFFFFF;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            font-family: Arial, sans-serif;
-        }
+        background-color: #FFFFFF;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        margin-bottom: 50px; /* Add margin at the bottom */
+        font-family: Arial, sans-serif;
+    }
     
         .task-header {
             color: #34145C;
@@ -80,6 +81,10 @@
             text-align: left;
             font-family: Arial, sans-serif;
         }
+        
+        .task-header.repeating-tasks {
+    margin-top: 40px; /* Add space above this header */
+}
     
         table {
             width: 100%;
@@ -95,9 +100,12 @@
         }
     
         table th {
-            background-color: #f6f6fa;
-            font-weight: bold;
-        }
+        background-color: #D8CDE4; /* Light purple color */
+        font-weight: bold;
+        color: #34145C; /* Optional: Ensure text remains visible */
+        padding: 10px;
+        text-align: left;
+    }
     
         table tr:nth-child(odd) {
             background-color: #f9f8fd; /* Set light purple background for odd rows */
@@ -122,6 +130,24 @@
         .task-list, .completed-task-list {
             width: 100%;
         }
+
+        .cta-button {
+            background-color: #F7CDA0;
+            color: black;
+            font-size: 16px;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 220px;
+            height: 30px;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-left: 60px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background-color: #ECB171;
+        }
     </style>
 </head>
 <body>
@@ -145,41 +171,59 @@
         </div>
     <div class="container mt-5">
         <!-- My Tasks Section -->
-        <h1 class="task-header">My Tasks</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="task-header" style="margin-bottom: -25px">My Common Tasks</h1>
+            <button class="cta-button" onclick="resetTaskForm()" data-toggle="modal" data-target="#taskModal">Add New Task</button>
+        </div>
+        <div class="task-container">
+            <table id="myTasksTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="task-list">
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- My Repeating Tasks Table -->
+        <h1 class="task-header repeating-tasks">My Repeating Tasks</h1>
+        <div class="task-container">
+            <table id="repeatingTasksTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Repeat Days</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="repeating-task-list">
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+    <!-- Completed Tasks Section -->
+    <div class="container mt-5">
+        <h1 class="task-header">My Completed Tasks</h1>
         <div class="task-container">
             <table>
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Priority</th>
-                        <th>Type</th>
-                        <th>Due Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="task-list">
-                    <!-- Dynamically added task rows will go here -->
-                </tbody>
-            </table>
-            <button 
-            class="btn btn-primary mt-3" 
-            data-toggle="modal" 
-            data-target="#taskModal" 
-            onclick="resetTaskForm()">Create New Task</button>
-        </div>
-    </div>
-
-    <!-- Completed Tasks Section -->
-    <div class="container mt-5">
-        <h1 class="task-header">Completed Tasks</h1>
-        <div class="task-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
                         <th>Description</th>
                         <th>Type</th>
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="completed-task-list">
@@ -188,6 +232,7 @@
             </table>
         </div>
     </div>
+    
     
         
     <!-- Modal for Task Form -->
@@ -412,28 +457,96 @@ document.getElementById('classRepeatPattern').addEventListener('change', functio
 
 document.addEventListener('DOMContentLoaded', function () {
     const taskList = document.getElementById('task-list');
+    const repeatingTaskList = document.getElementById('repeating-task-list');
     const completedTaskList = document.getElementById('completed-task-list');
 
-    // Fetch and display active tasks
+    // Fetch tasks from API
     fetch('/tasks/api')
         .then(response => response.json())
         .then(tasks => {
-            tasks.forEach(task => {
+            // Separate and sort tasks
+            const nonRepeatingTasks = tasks
+                .filter(task => ['homework', 'project', 'test', 'personal'].includes(task.type))
+                .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)); // Sort by due date
+
+            const repeatingTasks = tasks.filter(task => task.type === 'class');
+
+            // Populate My Tasks table
+            nonRepeatingTasks.forEach(task => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${task.title}</td>
                     <td>${task.priority}</td>
-                    <td>${task.type}</td>
-                    <td>${task.dueDate}</td>
+                    <td>${task.type.charAt(0).toUpperCase() + task.type.slice(1)}</td>
+                    <td>${task.dueDate ? task.dueDate : task.eventDate}</td>
                     <td class="task-actions">
-                        <button class="btn btn-primary btn-sm" onclick="openEditModal(${task.id})">Edit</button>
-                        <button class="btn btn-success btn-sm" onclick="markTaskAsComplete(${task.id})">Complete</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id})">Delete</button>
+                        <button class="btn btn-link p-0" onclick="openEditModal(${task.id})">
+                <img src="/images/edit.png" alt="Edit" style="width: 24px; height: 24px;">
+            </button>
+            <button class="btn btn-link p-0" onclick="deleteTask(${task.id})">
+                <img src="/images/delete.png" alt="Delete" style="width: 24px; height: 24px;">
+            </button>
+             <button class="btn btn-link p-0" onclick="markTaskAsComplete(${task.id})">
+                <img src="/images/complete.png" alt="Complete" style="width: 20px; height: 20px;">
+            </button>
                     </td>
                 `;
                 taskList.appendChild(row);
             });
-        });
+
+            // Populate My Repeating Tasks table
+            repeatingTasks.forEach(task => {
+                const row = document.createElement('tr');
+                const orderedDays = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    ];
+
+    const repeatDays = task.repeatDays
+        ? orderedDays
+            .filter(day => task.repeatDays.includes(day)) // Filter to include only the selected days
+            .map(day => {
+                const abbreviations = {
+                    Monday: 'M',
+                    Tuesday: 'T',
+                    Wednesday: 'W',
+                    Thursday: 'Th',
+                    Friday: 'F',
+                    Saturday: 'S',
+                    Sunday: 'Su',
+                };
+                return abbreviations[day];
+            })
+            .join(', ')
+        : 'None';
+
+
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.startTime || 'N/A'}</td>
+                    <td>${task.endTime || 'N/A'}</td>
+                    <td>${repeatDays}</td>
+                    <td class="task-actions">
+                        <button class="btn btn-link p-0" onclick="openEditModal(${task.id})">
+                <img src="/images/edit.png" alt="Edit" style="width: 24px; height: 24px;">
+            </button>
+            <button class="btn btn-link p-0" onclick="deleteTask(${task.id})">
+                <img src="/images/delete.png" alt="Delete" style="width: 24px; height: 24px;">
+            </button>
+             <button class="btn btn-link p-0" onclick="markTaskAsComplete(${task.id})">
+                <img src="/images/complete.png" alt="Complete" style="width: 20px; height: 20px;">
+            </button>
+                    </td>
+                `;
+                repeatingTaskList.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching tasks:', error));
 
     // Fetch and display completed tasks
     fetch('/tasks/api/completed')
@@ -443,16 +556,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${task.title}</td>
+                    <td>${task.priority}</td>
                     <td>${task.description}</td>
                     <td>${task.type}</td>
                     <td class="task-actions">
-                        <button class="btn btn-warning btn-sm" onclick="markTaskAsIncomplete(${task.id})">Mark As Incomplete</button>
+                        <button class="btn btn-link p-0" onclick="markTaskAsIncomplete(${task.id})">
+                <img src="/images/incomplete.png" alt="Complete" style="width: 20px; height: 20px;">
+            </button>
                     </td>
                 `;
                 completedTaskList.appendChild(row);
             });
-        });
+        })
+        .catch(error => console.error('Error fetching completed tasks:', error));
 });
+
 
 
 
