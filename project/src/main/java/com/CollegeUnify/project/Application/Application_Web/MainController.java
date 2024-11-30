@@ -32,6 +32,31 @@ public class MainController {
 
     @RequestMapping("/features")
     public String features(){
-        return "about";
+        return "features";
+    }
+
+    @RequestMapping("/contact-coming-soon")
+    public String contact(){
+        return "coming_soon";
+    }
+
+    @RequestMapping("/resources-coming-soon")
+    public String resources(){
+        return "coming_soon";
+    }
+
+    @RequestMapping("/pricing-coming-soon")
+    public String pricing(){
+        return "coming_soon";
+    }
+
+    @RequestMapping("/chat-coming-soon")
+    public String chat(){
+        return "coming_soon_auth";
+    }
+
+    @RequestMapping("/my-resources-coming-soon")
+    public String myResources(){
+        return "coming_soon_auth";
     }
 }

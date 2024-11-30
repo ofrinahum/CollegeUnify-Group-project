@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #F2F2F7;
+            background: linear-gradient(to bottom, #F6F5FF, #ffedd6);
         }
 
         /* Navigation Bar Styles */
@@ -33,14 +33,12 @@
         .navbar-logo {
             margin-left: -10px;
             cursor: pointer;
-            z-index: 2;
         }
 
         .nav-buttons {
             display: flex;
             gap: 15px;
             margin-right: 10px;
-            z-index: 2;
         }
 
         .nav-button {
@@ -76,160 +74,101 @@
             background-color: #ECB171;
         }
 
-        /* Rectangle Header */
-        .rectangle-header {
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(to right, #ffedd6, #ffffff);
+            padding: 40px 20px;
             text-align: center;
-            color: #543080; /* Dark purple */
+        }
+
+        .hero-section img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .hero-section h1 {
+            color: #C99257;
+            font-size: 32px;
+            margin-top: 20px;
+            line-height: 1.4;
+        }
+
+        /* About Us Section */
+        .about-section {
+            background: linear-gradient(to right, #ffffff, #F6F5FF);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-text {
+            max-width: 800px;
+        }
+
+        .about-text h1 {
             font-size: 28px;
-            margin-top: 30px;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            line-height: 1.5;
-            margin-bottom: 20px; /* Space between header and content */
-        }
-
-        .rectangle-header2 {
-            font-size: 22px;
             color: #543080;
-            margin-bottom: 15px;
-            font-weight: bold;
-            line-height: 1.5;
-            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
             text-align: center;
-            align-items: center;
         }
 
-        /* Separate Image and Text Side-by-Side */
-        .content-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 50px;
-            max-width: 1000px;
-            margin: 15px auto;
-            padding: 0px 0;
-        }
-
-        .image-box, .text-box {
-            width: 48%; /* Equal width for the two elements */
-            background-color: transparent;
-            border-radius: 0px;
-            overflow: hidden;
-        }
-
-        .image-box{
-            padding-top: 32px;
-        }
-
-        .image-box img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 20px;
-        }
-
-        .text-box {
-            padding: 20px;
-        }
-
-        .text-box h2 {
-            font-size: 22px;
-            color: #B484E4;
-            margin-bottom: 15px;
-            font-family: Arial, sans-serif;
-        }
-
-        .text-box p {
+        .about-text p {
             font-size: 16px;
-            line-height: 1.6;
-            font-family: Arial, sans-serif;
             color: #333;
+            line-height: 1.8;
+            text-align: justify;
         }
 
+        /* Features Section */
         .features-section {
-            margin: 60px auto;
-            max-width: 1200px;
-            padding: 0 20px;
+            background: linear-gradient(to right, #ffedd6, #ffffff);
+            padding: 40px 20px;
             text-align: center;
         }
 
-        .features-row {
+        .features-section h2 {
+            font-size: 24px;
+            color: #543080;
+            margin-bottom: 20px;
+        }
+
+        .features-list {
             display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap; /* Allows the layout to wrap on smaller screens */
+            justify-content: center;
+            flex-wrap: wrap;
             gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .feature-card {
-            width: 15%; /* Allow each feature to take up 15% of the width */
-            background-color: #fdfdfd;
+        .feature-item {
+            width: calc(33.33% - 20px);
             padding: 20px;
+            background-color: #FFFFFF;
             border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .feature-card h3 {
-            font-size: 17px;
-            color: #B484E4;
-            margin-bottom: 15px;
-            font-family: Arial, sans-serif;
-        }
-
-        .feature-card p {
-            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
             color: #333;
-            font-family: Arial, sans-serif;
-        }
-
-        .feature-card button {
-            background-color: #F7CDA0;
-            border: 1px solid #543080;
-            border-radius: 5px;
-            padding: 8px 15px;
-            font-size: 14px;
+            text-align: center;
             cursor: pointer;
-            font-family: Arial, sans-serif;
-            transition: background-color 0.3s;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
         }
 
-        .feature-card button:hover {
-            background-color: #ECB171;
+        .feature-item:hover {
+            transform: scale(1.05);
+            background-color: #F6F5FF;
         }
 
-        .half-break {
-        margin: 22.5px 0; /* Adjust this value for the desired amount of space */
-     }
+        .feature-item span {
+            font-weight: bold;
+            color: #543080;
+        }
 
-        /* Full-Screen Image Section */
-    .image-section {
-        position: relative;
-        width: 100%;
-        height: 350px; /* Full height minus navbar height */
-        overflow: hidden;
-    }
-
-    .image-section img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Ensure the image covers the area while maintaining aspect ratio */
-    }
-
-    /* Header Overlay */
-    .header-overlay {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* Center the header */
-        color: #fbf8fe; /* Text color to contrast against the image */
-        font-size: 32px;
-        font-weight: bold;
-        text-align: center;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* Add text shadow for better visibility */
-        z-index: 2; /* Ensure it sits above the image */
-    }
-
-
+        @media (max-width: 768px) {
+            .feature-item {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -237,12 +176,12 @@
     <div class="navbar">
         <div class="navbar-content">
             <a href="/" class="navbar-logo">
-                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px; z-index: 2;">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
             </a>
             <div class="nav-buttons">
-                <button onclick="location.href='#pricing'" class="nav-button">Pricing</button>
-                <button onclick="location.href='#resources'" class="nav-button">Resources</button>
-                <button onclick="location.href='#contact'" class="nav-button">Contact</button>
+                <button onclick="location.href='/pricing-coming-soon'" class="nav-button">Pricing</button>
+                <button onclick="location.href='/resources-coming-soon'" class="nav-button">Resources</button>
+                <button onclick="location.href='/contact-coming-soon'" class="nav-button">Contact</button>
                 <button onclick="location.href='/features'" class="nav-button">Features</button>
                 <button onclick="location.href='/about'" class="nav-button">About</button>
                 <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
@@ -251,74 +190,52 @@
         </div>
     </div>
 
-        <!-- Image Section -->
-    <div class="image-section">
-        <div class="header-overlay">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <img src="/images/wordsLogo.png" alt="CollegeUnify Logo">
+        <h1>
             Built by Students, For Students: CollegeUnify<br>
-            Welcome to Your Path Forward!
-        </div>
-        <img src="/images/aboutImage.png" alt="About Us">
+            Introducing Your Path Forward!
+        </h1>
     </div>
-            <!-- Text Box -->
-            <div class="text-box">
-                <h2>About Us</h2>
-                <p>
-                    Welcome to CollegeUnify, a task management application
-                    designed with your success—and balance—in mind!
-                    Created by a group of college students from Towson University,
-                    our mission is to empower fellow students to take control of their
-                    schedules while ensuring that they can still make time for themselves.
-                    With our smart scheduling system, we prioritize not just your goals
-                    but also your well-deserved free time, because we believe break time
-                    is just as important as go time. As students ourselves, we intimately
-                    understand the challenges of balancing classes, assignments, and personal commitments.
-                    That’s why we’ve built CollegeUnify to be more than just a planner—it’s a tool
-                    designed with empathy for your unique journey. Join us as we redefine productivity
-                    and make scheduling a tool for success, not stress!
-                </p>
+
+    <!-- About Us Section -->
+    <div class="about-section">
+        <div class="about-text">
+            <h1>About Us</h1>
+            <p>
+                Welcome to CollegeUnify, a task management application designed with your success—and balance—in mind!
+                Created by a group of college students from Towson University, our mission is to empower fellow students
+                to take control of their schedules while ensuring that they can still make time for themselves. With our 
+                smart scheduling system, we prioritize not just your goals but also your well-deserved free time, because 
+                we believe break time is just as important as go time. As students ourselves, we intimately understand 
+                the challenges of balancing classes, assignments, and personal commitments. That’s why we’ve built 
+                CollegeUnify to be more than just a planner—it’s a tool designed with empathy for your unique journey. 
+                Join us as we redefine productivity and make scheduling a tool for success, not stress!
+            </p>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <h2>Curious about how CollegeUnify can simplify your life?</h2>
+        <div class="features-list">
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Task Management:</span> Stay organized with ease
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Smart Scheduling:</span> Plan your study time effectively
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Campus Resources:</span> Coming Soon!
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Group Chats:</span> Coming Soon!
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Data Analytics:</span> Coming Soon!
             </div>
         </div>
-        <div style="background-color: white; padding: 40px 20px; text-align: center; margin: 30px auto;">
-            <h2 class="rectangle-header2">
-                Curious about how CollegeUnify can simplify your life?<br>
-                Here’s a quick overview of our key features:
-            </h2>
-        </div>
-        <!-- Feature Section -->
-<div class="features-section">
-    <div class="features-row">
-        <!-- Feature 1 -->
-        <div class="feature-card">
-            <h3>Task Management</h3>
-            <p>Stay organized with tasks and deadlines that keep your schedule in check.</p>
-            <button onclick="location.href='/features'">Learn More</button>
-        </div>
-        <!-- Feature 2 -->
-        <div class="feature-card">
-            <h3>Smart Scheduling</h3>
-            <p>Automatically generate optimal schedules to maximize your time.</p>
-            <button onclick="location.href='/features'">Learn More</button>
-        </div>
-        <!-- Feature 3 -->
-        <div class="feature-card">
-            <h3>Campus Resources</h3>
-            <p class="half-break">Quick access to campus resources (Coming Soon!).</p>
-            <button onclick="location.href='/features'">Learn More</button>
-        </div>
-        <!-- Feature 4 -->
-        <div class="feature-card">
-            <h3>Group Chats</h3>
-            <p class="half-break">Collaborate easily with peers (Coming Soon!).</p>
-            <button onclick="location.href='/features'">Learn More</button>
-        </div>
-        <!-- Feature 5 -->
-        <div class="feature-card">
-            <h3>Data Analytics</h3>
-            <p class="half-break">Gain insights on your productivity (Coming Soon!).</p>
-            <button onclick="location.href='/features'">Learn More</button>
-        </div>
     </div>
-</div>
-
 </body>
 </html>

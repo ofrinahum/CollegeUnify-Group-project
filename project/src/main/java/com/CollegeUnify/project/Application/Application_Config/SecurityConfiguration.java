@@ -54,8 +54,13 @@ public class SecurityConfiguration{
                 .requestMatchers("/img/**").permitAll() // Allow /img/** for images
                 .requestMatchers("/images/**").permitAll() // Add this line
                 .requestMatchers("/dashboard/**").authenticated()
+                .requestMatchers("/my-resources-coming-soon/**").authenticated()
+                .requestMatchers("/chat-coming-soon/**").authenticated()
                 .requestMatchers("/about/**").permitAll()
                 .requestMatchers("/features/**").permitAll()
+                .requestMatchers("/pricing-coming-soon/**").permitAll()
+                .requestMatchers("/resources-coming-soon/**").permitAll()
+                .requestMatchers("/contact-coming-soon/**").permitAll()
                 .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 )
