@@ -1,0 +1,15 @@
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Config\SecurityConfiguration.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Model\Role.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Model\User.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Repository\UserRepository.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Service\UserService.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Service\UserServiceImpl.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Web\MainController.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Web\UserRegistrationController.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\Application\Application_Web_Dto\UserRegistrationDto.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\ProjectApplication.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\TaskManagement\Task_Mapping\TaskRowMapper.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\TaskManagement\Task_Mapping\TasksDao.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\TaskManagement\Task_Model\Task.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\TaskManagement\Task_Service\TaskService.java
+C:\Users\sophi\Documents\GitHub\softwareEngineeringProject\project\src\main\java\com\CollegeUnify\project\TaskManagement\Task_Web\TaskController.java

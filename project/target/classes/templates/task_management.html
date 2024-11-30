@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks | CollegeUnify</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(251, 250, 255, 0.75), rgba(243, 232, 255, 0.75));
+        }
+
+        /* Navigation Bar Logo */
+        .navbar-logo {
+            margin-left: -10px;
+            margin-bottom: 3px;
+            cursor: pointer;
+            z-index:2
+        }
+
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            padding: 2.5px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button:hover {
+            background-color: #ececec;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-signin {
+            background-color: #F2F2F7;
+            border: 1px solid black;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-signin:hover {
+            background-color: #d9d9e7;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-register {
+            background-color: #F7CDA0;
+            border: 1px solid black;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-button-register:hover {
+            background-color: #ECB171;
+            z-index: 2;
+            font-family: Arial, sans-serif;
+        }
+
+    
+        .task-container {
+        background-color: #FFFFFF;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        margin-bottom: 50px; /* Add margin at the bottom */
+        font-family: Arial, sans-serif;
+    }
+    
+        .task-header {
+            color: #34145C;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-family: Arial, sans-serif;
+        }
+        
+        .task-header.repeating-tasks {
+    margin-top: 40px; /* Add space above this header */
+}
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* Ensures even column spacing */
+        }
+    
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #000000;
+            color: #34145C; /* Purple text color */
+        }
+    
+        table th {
+        background-color: #D8CDE4; /* Light purple color */
+        font-weight: bold;
+        color: #34145C; /* Optional: Ensure text remains visible */
+        padding: 10px;
+        text-align: left;
+    }
+    
+        table tr:nth-child(odd) {
+            background-color: #f9f8fd; /* Set light purple background for odd rows */
+            border-bottom: 1px solid #ddd;
+        }
+    
+        table tr:nth-child(even) {
+            background-color: #f9f8ff; /* Set light purple background for even rows */
+            border-bottom: 1px solid #ddd;
+        }
+    
+        table .task-actions {
+            text-align: center; /* Center aligns buttons under "Actions" */
+        }
+    
+        .task-actions .btn {
+            display: inline-block;
+            margin: 2px; /* Small margin between buttons */
+            font-size: 12px;
+        }
+    
+        .task-list, .completed-task-list {
+            width: 100%;
+        }
+
+        .cta-button {
+            background-color: #F7CDA0;
+            color: black;
+            font-size: 16px;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 220px;
+            height: 30px;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-left: 60px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background-color: #ECB171;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
+        <!-- Navigation Bar -->
+        <div style="background-color: white; position: relative; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); height: 70px; z-index: 2;">
+            <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;">
+                <a href="/dashboard" class="navbar-logo">
+                    <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
+                </a>
+                <div style="display: flex; gap: 15px; margin-right: 18.5px; z-index:2">
+                    <button onclick="location.href='/chat-coming-soon'" class="nav-button">Chat</button>
+                    <button onclick="location.href='/my-resources-coming-soon'" class="nav-button">Resources</button>
+                    <button onclick="location.href='/tasks'" class="nav-button">My Tasks</button>
+                    <button onclick="location.href='/dashboard'" class="nav-button">Dashboard</button>
+                    <button onclick="location.href='/settings-coming-soon'" class="nav-button nav-button-signin">Settings</button>
+                    <button onclick="location.href='/logout'" class="nav-button nav-button-register">Logout</button>
+                </div>
+            </div>
+        </div>
+    <div class="container mt-5">
+        <!-- My Tasks Section -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="task-header" style="margin-bottom: -25px">My Common Tasks</h1>
+            <button class="cta-button" onclick="resetTaskForm()" data-toggle="modal" data-target="#taskModal">Add New Task</button>
+        </div>
+        <div class="task-container">
+            <table id="myTasksTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="task-list">
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- My Repeating Tasks Table -->
+        <h1 class="task-header repeating-tasks">My Repeating Tasks</h1>
+        <div class="task-container">
+            <table id="repeatingTasksTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Repeat Days</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="repeating-task-list">
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+    <!-- Completed Tasks Section -->
+    <div class="container mt-5">
+        <h1 class="task-header">My Completed Tasks</h1>
+        <div class="task-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="completed-task-list">
+                    <!-- Dynamically added completed task rows will go here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+        
+    <!-- Modal for Task Form -->
+    <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="taskForm" method="POST" action="/tasks/add">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    <input type="hidden" id="taskId" name="taskId" value="">
+
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="taskModalLabel">Add Task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+
+                        <!-- Priority Field -->
+                        <div class="form-group" id="priorityField">
+                            <label for="priority">Priority</label>
+                            <select class="form-control" id="priority" name="priority">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type">Task Type</label>
+                            <select class="form-control" id="type" name="type" onchange="toggleFields()" required>
+                                <option value="homework">Homework</option>
+                                <option value="project">Project</option>
+                                <option value="test">Test</option>
+                                <option value="personal">Personal</option>
+                                <option value="class">Repeating</option>
+                            </select>
+                        </div>
+
+                        <!-- Homework/Project Due Date -->
+                        <div class="form-group" id="dueDateField">
+                            <label for="due_date">Due Date</label>
+                            <input type="date" class="form-control" id="dueDate" name="dueDate">
+                            <label for="due_time">Due Time</label> 
+                            <input type="time" class="form-control" id="dueTime" name="dueTime">
+                        </div>
+                            
+
+
+                        <!-- Test and Personal Fields -->
+                            <div class="form-group" id = "eventDateField" style = "display: none;">
+                                <label for="event_date">Event Date</label>
+                                <input type="date" class="form-control" id="eventDate" name="eventDate">
+                            </div>
+
+                            <div class="form-group" id = "startEndField" style = "display: none;">
+                                <label for="start_time">Start Time</label>
+                                <input type="time" class="form-control" id="startTime" name="startTime">
+                                <label for="end_time">End Time</label>
+                                <input type="time" class="form-control" id="endTime" name="endTime">
+                            </div>
+
+                        <!-- Class Fields -->
+                        <div id="classFields" style="display: none;">
+                            <div class="form-group">
+                                <label for="start_date">Start Date</label>
+                                <input type="date" class="form-control" id="classStartDate" name="startDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date">End Date</label>
+                                <input type="date" class="form-control" id="classEndDate" name="endDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="repeat_pattern">Repeat Frequency</label>
+                                <select class="form-control" id="classRepeatPattern" name="repeatPattern">
+                                    <option value="" selected hidden>None</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <!--<option value="bi-weekly">Bi-Weekly</option>-->
+                                    <!--<option value="monthly">Bi-Weekly</option>       Down the road finish adding these functionalities-->
+                                </select>
+                            </div>                            
+                            <div id="repeatDaysClass" style="display: none;">
+                                <label>Repeat On</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Monday" id="mondayClass" name="repeatDays">
+                                    <label class="form-check-label" for="day">Monday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Tuesday" id="tuesdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="day">Tuesday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Wednesday" id="wednesdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="day">Wednesday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Thursday" id="thursdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="day">Thursday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Friday" id="fridayClass" name="repeatDays">
+                                    <label class="form-check-label" for="day">Friday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Saturday" id="saturdayClass" name="repeatDays">
+                                    <label class="form-check-label" for="day">Saturday</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Sunday" id="sundayClass" name="repeatDays">
+                                    <label class="form-check-label" for="day">Sunday</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save Task</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+function toggleFields() {
+    const type = document.getElementById('type').value;
+    const isRepeatingCheckbox = document.getElementById('isRepeating');
+    const repeatPatternField = document.getElementById('personalRepeatPattern');
+
+    // Show/hide fields based on task type
+    const eventDateField = document.getElementById('eventDateField');
+    const startEndField = document.getElementById('startEndField')
+    const dueDateField = document.getElementById('dueDateField');
+    const priorityField = document.getElementById('priorityField');
+    const classFields = document.getElementById('classFields');
+
+    dueDateField.style.display = 'none';
+    priorityField.style.display = 'none';
+    eventDateField.style.display = 'none';
+    startEndField.style.display = 'none';
+    classFields.style.display = 'none';
+
+    if(type === 'homework' || type === 'project'){
+        dueDateField.style.display = 'block';
+    }
+
+    if(type === 'homework' || type === 'test' || type === 'project'){
+        priorityField.style.display = 'block';
+    }
+
+    if(type === 'test' || type === 'personal'){
+        eventDateField.style.display = 'block';
+        startEndField.style.display = 'block';
+    }
+
+    if(type === 'class'){
+        startEndField.style.display = 'block';
+        classFields.style.display = 'block';
+    }
+    }
+
+    
+function handleRepeatDays(type) {
+    const repeatPattern = document.getElementById(type + 'RepeatPattern').value;
+    const repeatDaysSection = document.getElementById('repeatDaysClass');
+
+    if (repeatPattern === 'daily') {
+        // Hide the repeat days section for daily repeat
+        repeatDaysSection.style.display = 'none';
+
+        // Automatically check all days
+        const checkboxes = repeatDaysSection.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = true);
+    } else if (repeatPattern === 'weekly' || repeatPattern === 'bi-weekly' || repeatPattern === 'monthly') {
+        // Show the repeat days section for weekly, bi-weekly, or monthly repeat patterns
+        repeatDaysSection.style.display = 'block';
+
+        // Ensure no days are pre-checked initially
+        const checkboxes = repeatDaysSection.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+    } else {
+        // If no pattern is selected, hide the repeat days section and clear selections
+        repeatDaysSection.style.display = 'none';
+
+        const checkboxes = repeatDaysSection.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+    }
+}
+
+// Attach event listener to the repeat pattern dropdown for the 'class' type
+document.getElementById('classRepeatPattern').addEventListener('change', function () {
+    handleRepeatDays('class');
+});
+
+
+    
+        document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('taskForm');
+    const submitButton = document.querySelector('.btn-success');
+    if (!form) {
+        console.error("Form not found!");
+        return;
+    }
+
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const taskList = document.getElementById('task-list');
+    const repeatingTaskList = document.getElementById('repeating-task-list');
+    const completedTaskList = document.getElementById('completed-task-list');
+
+    // Fetch tasks from API
+    fetch('/tasks/api')
+        .then(response => response.json())
+        .then(tasks => {
+            // Separate and sort tasks
+            const nonRepeatingTasks = tasks
+                .filter(task => ['homework', 'project', 'test', 'personal'].includes(task.type))
+                .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)); // Sort by due date
+
+            const repeatingTasks = tasks.filter(task => task.type === 'class');
+
+            // Populate My Tasks table
+            nonRepeatingTasks.forEach(task => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.priority}</td>
+                    <td>${task.type.charAt(0).toUpperCase() + task.type.slice(1)}</td>
+                    <td>${task.dueDate ? task.dueDate : task.eventDate}</td>
+                    <td class="task-actions">
+                        <button class="btn btn-link p-0" onclick="openEditModal(${task.id})">
+                <img src="/images/edit.png" alt="Edit" style="width: 24px; height: 24px;">
+            </button>
+            <button class="btn btn-link p-0" onclick="deleteTask(${task.id})">
+                <img src="/images/delete.png" alt="Delete" style="width: 24px; height: 24px;">
+            </button>
+             <button class="btn btn-link p-0" onclick="markTaskAsComplete(${task.id})">
+                <img src="/images/complete.png" alt="Complete" style="width: 20px; height: 20px;">
+            </button>
+                    </td>
+                `;
+                taskList.appendChild(row);
+            });
+
+            // Populate My Repeating Tasks table
+            repeatingTasks.forEach(task => {
+                const row = document.createElement('tr');
+                const orderedDays = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    ];
+
+    const repeatDays = task.repeatDays
+        ? orderedDays
+            .filter(day => task.repeatDays.includes(day)) // Filter to include only the selected days
+            .map(day => {
+                const abbreviations = {
+                    Monday: 'M',
+                    Tuesday: 'T',
+                    Wednesday: 'W',
+                    Thursday: 'Th',
+                    Friday: 'F',
+                    Saturday: 'S',
+                    Sunday: 'Su',
+                };
+                return abbreviations[day];
+            })
+            .join(', ')
+        : 'None';
+
+
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.startTime || 'N/A'}</td>
+                    <td>${task.endTime || 'N/A'}</td>
+                    <td>${repeatDays}</td>
+                    <td class="task-actions">
+                        <button class="btn btn-link p-0" onclick="openEditModal(${task.id})">
+                <img src="/images/edit.png" alt="Edit" style="width: 24px; height: 24px;">
+            </button>
+            <button class="btn btn-link p-0" onclick="deleteTask(${task.id})">
+                <img src="/images/delete.png" alt="Delete" style="width: 24px; height: 24px;">
+            </button>
+             <button class="btn btn-link p-0" onclick="markTaskAsComplete(${task.id})">
+                <img src="/images/complete.png" alt="Complete" style="width: 20px; height: 20px;">
+            </button>
+                    </td>
+                `;
+                repeatingTaskList.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching tasks:', error));
+
+    // Fetch and display completed tasks
+    fetch('/tasks/api/completed')
+        .then(response => response.json())
+        .then(completedTasks => {
+            completedTasks.forEach(task => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${task.title}</td>
+                    <td>${task.priority}</td>
+                    <td>${task.description}</td>
+                    <td>${task.type}</td>
+                    <td class="task-actions">
+                        <button class="btn btn-link p-0" onclick="markTaskAsIncomplete(${task.id})">
+                <img src="/images/incomplete.png" alt="Complete" style="width: 20px; height: 20px;">
+            </button>
+                    </td>
+                `;
+                completedTaskList.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching completed tasks:', error));
+});
+
+
+
+
+
+
+function deleteTask(taskId) {
+    if (!confirm("Are you sure you want to delete this task?")) {
+        return; // User canceled deletion
+    }
+
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+    fetch(`/tasks/${taskId}/delete`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken,
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log(`Task with ID ${taskId} deleted successfully.`);
+            location.reload(); // Force page refresh
+        } else {
+            return response.text().then(errorMessage => {
+                throw new Error(errorMessage);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error.message);
+        alert('Failed to delete the task. Reason: ' + error.message);
+    });
+}
+
+
+// Open Edit Modal
+function openEditModal(taskId) {
+    fetch(`/tasks/api/${taskId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch task with ID ${taskId}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(task => {
+            console.log("Fetched task data for editing:", task);
+
+            document.getElementById('taskModalLabel').textContent = 'Edit Task';
+            // Populate form fields
+            document.getElementById('taskId').value = task.id || '';
+            document.getElementById('title').value = task.title || '';
+            document.getElementById('description').value = task.description || '';
+            document.getElementById('priority').value = task.priority || 'low';
+            document.getElementById('type').value = task.type || '';
+
+            // Toggle fields based on task type
+            toggleFields();
+
+            // Populate conditional fields
+            if (task.type === 'homework' || task.type === 'project') {
+                document.getElementById('dueDate').value = task.dueDate || '';
+                document.getElementById('dueTime').value = task.dueTime || '';
+            } else if (task.type === 'test' || task.type === 'personal') {
+                document.getElementById('eventDate').value = task.eventDate || '';
+                document.getElementById('startTime').value = task.startTime || '';
+                document.getElementById('endTime').value = task.endTime || '';
+            } else if (task.type === 'class') {
+                document.getElementById('classStartDate').value = task.startDate || '';
+                document.getElementById('classEndDate').value = task.endDate || '';
+                document.getElementById('classRepeatPattern').value = task.repeatPattern || '';
+
+                // Populate repeat days
+                const repeatDays = task.repeatDays || [];
+                const checkboxes = document.querySelectorAll('#repeatDaysClass input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = repeatDays.includes(checkbox.value);
+                });
+            }
+
+            // Show the modal
+            $('#taskModal').modal('show');
+        })
+        .catch(error => {
+            console.error('Error opening edit modal:', error);
+            alert('Failed to load task details for editing.');
+        });
+}
+
+// Form Submission for Add/Edit
+document.getElementById('taskForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const submitButton = document.querySelector('.btn-success');
+    submitButton.disabled = true; // Disable the button to prevent multiple submissions
+
+    const taskId = document.getElementById('taskId').value.trim();
+    const formData = new FormData(this);
+
+    let url = '/tasks/add'; // Default to adding a new task
+    let method = 'POST';
+
+    if (taskId) { // If taskId exists, update the task
+        url = `/tasks/${taskId}/update`;
+        method = 'PUT';
+    }
+
+    try {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value,
+            },
+            body: formData,
+        });
+
+
+        console.log("Task saved successfully");
+        $('#taskModal').modal('hide'); // Close the modal
+        location.href = '/tasks'; // Redirect to tasks page
+
+    } finally {
+        submitButton.disabled = false; // Re-enable the button
+    }
+});
+
+function markTaskAsComplete(taskId) {
+    if (!confirm("Mark this task as completed?")) {
+        return; // User canceled
+    }
+
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+    fetch(`/tasks/${taskId}/complete`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log(`Task with ID ${taskId} marked as completed.`);
+                location.reload(); // Reload the page to update the lists
+            } else {
+                return response.text().then(errorMessage => {
+                    throw new Error(errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+            alert('Failed to mark the task as completed. Reason: ' + error.message);
+        });
+}
+
+
+function markTaskAsIncomplete(taskId) {
+    if (!confirm("Move this task back to Saved Tasks?")) {
+        return; // User canceled
+    }
+
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+    fetch(`/tasks/${taskId}/incomplete`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+                location.href = '/tasks'; // Reload the tasks page
+            } else {
+                return response.text().then(errorMessage => {
+                    throw new Error(errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+            alert('Failed to mark the task as incomplete. Reason: ' + error.message);
+        });
+}
+
+
+// Fetch completed tasks on page load
+function resetTaskForm() {
+    // Reset the modal title
+    document.getElementById('taskModalLabel').textContent = 'Add New Task';
+
+    // Clear all input fields
+    document.getElementById('taskForm').reset();
+
+    // Reset any hidden fields
+    document.getElementById('taskId').value = '';
+    document.getElementById('dueDate').value = '';
+    document.getElementById('dueTime').value = '';
+    document.getElementById('eventDate').value = '';
+    document.getElementById('startTime').value = '';
+    document.getElementById('endTime').value = '';
+    document.getElementById('classStartDate').value = '';
+    document.getElementById('classEndDate').value = '';
+
+    // Reset dropdowns to default
+    document.getElementById('type').value = 'homework';
+    document.getElementById('priority').value = 'low';
+    document.getElementById('classRepeatPattern').value = '';
+
+    // Hide conditionally displayed fields
+    toggleFields();
+}
+
+    </script>
+</body>
+</html>

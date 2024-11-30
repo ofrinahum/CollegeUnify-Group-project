@@ -1,0 +1,15 @@
+com\CollegeUnify\project\Application\Application_Model\Role.class
+com\CollegeUnify\project\TaskManagement\Task_Service\TaskService.class
+com\CollegeUnify\project\Application\Application_Model\User.class
+com\CollegeUnify\project\TaskManagement\Task_Mapping\TasksDao.class
+com\CollegeUnify\project\TaskManagement\Task_Model\Task.class
+com\CollegeUnify\project\ProjectApplication.class
+com\CollegeUnify\project\Application\Application_Config\SecurityConfiguration.class
+com\CollegeUnify\project\Application\Application_Web\MainController.class
+com\CollegeUnify\project\Application\Application_Web_Dto\UserRegistrationDto.class
+com\CollegeUnify\project\TaskManagement\Task_Web\TaskController.class
+com\CollegeUnify\project\Application\Application_Web\UserRegistrationController.class
+com\CollegeUnify\project\Application\Application_Service\UserService.class
+com\CollegeUnify\project\Application\Application_Service\UserServiceImpl.class
+com\CollegeUnify\project\TaskManagement\Task_Mapping\TaskRowMapper.class
+com\CollegeUnify\project\Application\Application_Repository\UserRepository.class

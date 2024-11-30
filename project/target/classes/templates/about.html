@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | CollegeUnify</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #F6F5FF, #ffedd6);
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 50px;
+            z-index: 2;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1440px;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .navbar-logo {
+            margin-left: -10px;
+            cursor: pointer;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-right: 10px;
+        }
+
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #ececec;
+        }
+
+        .nav-button-signin {
+            background-color: #F2F2F7;
+            border: 1px solid black;
+        }
+
+        .nav-button-signin:hover {
+            background-color: #d9d9e7;
+        }
+
+        .nav-button-register {
+            background-color: #F7CDA0;
+            border: 1px solid black;
+        }
+
+        .nav-button-register:hover {
+            background-color: #ECB171;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(to right, #ffedd6, #ffffff);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .hero-section img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .hero-section h1 {
+            color: #C99257;
+            font-size: 32px;
+            margin-top: 20px;
+            line-height: 1.4;
+        }
+
+        /* About Us Section */
+        .about-section {
+            background: linear-gradient(to right, #ffffff, #F6F5FF);
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .about-text {
+            max-width: 800px;
+        }
+
+        .about-text h1 {
+            font-size: 28px;
+            color: #543080;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-text p {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: linear-gradient(to right, #ffedd6, #ffffff);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .features-section h2 {
+            font-size: 24px;
+            color: #543080;
+            margin-bottom: 20px;
+        }
+
+        .features-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-item {
+            width: calc(33.33% - 20px);
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        .feature-item:hover {
+            transform: scale(1.05);
+            background-color: #F6F5FF;
+        }
+
+        .feature-item span {
+            font-weight: bold;
+            color: #543080;
+        }
+
+        @media (max-width: 768px) {
+            .feature-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-logo">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
+            </a>
+            <div class="nav-buttons">
+                <button onclick="location.href='/pricing-coming-soon'" class="nav-button">Pricing</button>
+                <button onclick="location.href='/resources-coming-soon'" class="nav-button">Resources</button>
+                <button onclick="location.href='/contact-coming-soon'" class="nav-button">Contact</button>
+                <button onclick="location.href='/features'" class="nav-button">Features</button>
+                <button onclick="location.href='/about'" class="nav-button">About</button>
+                <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
+                <button onclick="location.href='/registration'" class="nav-button nav-button-register">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <img src="/images/wordsLogo.png" alt="CollegeUnify Logo">
+        <h1>
+            Built by Students, For Students: CollegeUnify<br>
+            Introducing Your Path Forward!
+        </h1>
+    </div>
+
+    <!-- About Us Section -->
+    <div class="about-section">
+        <div class="about-text">
+            <h1>About Us</h1>
+            <p>
+                Welcome to CollegeUnify, a task management application designed with your success—and balance—in mind!
+                Created by a group of college students from Towson University, our mission is to empower fellow students
+                to take control of their schedules while ensuring that they can still make time for themselves. With our 
+                smart scheduling system, we prioritize not just your goals but also your well-deserved free time, because 
+                we believe break time is just as important as go time. As students ourselves, we intimately understand 
+                the challenges of balancing classes, assignments, and personal commitments. That’s why we’ve built 
+                CollegeUnify to be more than just a planner—it’s a tool designed with empathy for your unique journey. 
+                Join us as we redefine productivity and make scheduling a tool for success, not stress!
+            </p>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <h2>Curious about how CollegeUnify can simplify your life?</h2>
+        <div class="features-list">
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Task Management:</span> Stay organized with ease
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Smart Scheduling:</span> Plan your study time effectively
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Campus Resources:</span> Coming Soon!
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Group Chats:</span> Coming Soon!
+            </div>
+            <div class="feature-item" onclick="location.href='/features'">
+                <span>Data Analytics:</span> Coming Soon!
+            </div>
+        </div>
+    </div>
+</body>
+</html>

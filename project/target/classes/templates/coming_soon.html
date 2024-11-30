@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | CollegeUnify</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #F2F2F7;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 50px;
+            z-index: 2;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1440px;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .navbar-logo {
+            margin-left: -10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-right: 10px;
+            z-index: 2;
+        }
+
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #ececec;
+        }
+
+        .nav-button-signin {
+            background-color: #F2F2F7;
+            border: 1px solid black;
+        }
+
+        .nav-button-signin:hover {
+            background-color: #d9d9e7;
+        }
+
+        .nav-button-register {
+            background-color: #F7CDA0;
+            border: 1px solid black;
+        }
+
+        .nav-button-register:hover {
+            background-color: #ECB171;
+        }
+
+    </style>
+</head>
+<body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-logo">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px; z-index: 2;">
+            </a>
+            <div class="nav-buttons">
+                <button onclick="location.href='/pricing-coming-soon'" class="nav-button">Pricing</button>
+                <button onclick="location.href='/resources-coming-soon'" class="nav-button">Resources</button>
+                <button onclick="location.href='/contact-coming-soon'" class="nav-button">Contact</button>
+                <button onclick="location.href='/features'" class="nav-button">Features</button>
+                <button onclick="location.href='/about'" class="nav-button">About</button>
+                <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
+                <button onclick="location.href='/registration'" class="nav-button nav-button-register">Register</button>
+            </div>
+        </div>
+    </div>
+
+        <!-- Image Section -->
+        <div style="background-color: #F6F5FF; height: 498px; width: 100%; position: relative; z-index: 1; display: flex; justify-content: center; align-items: center;">
+            <img src="/images/underConstruction.png" alt="underConstruction" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        </div>
+
+        <div style="background-color: white; height: 200px; width: 100%; position: relative; z-index: 1; display: flex; justify-content: center; align-items: center;">
+            <h1 style="color: #34145C; font-size: 40px; margin: 0; line-height: 1.2;">
+                We are hard at work to bring you new features in the near future!
+            </h1>
+            </div>
+
+</body>
+</html>

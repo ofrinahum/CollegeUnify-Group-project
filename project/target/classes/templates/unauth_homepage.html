@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | CollegeUnify</title>
+    <style>
+        /* Add animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Style for the box containers */
+        .info-box {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            text-align: center;
+            border-radius: 8px;
+            flex: 1;
+            opacity: 0; /* Initially invisible */
+            transform: translateY(20px); /* Start from a slight offset */
+        }
+
+        .info-box.visible {
+            opacity: 1; /* Make the box visible when the animation is triggered */
+            transform: translateY(0); /* Reset the vertical position */
+        }
+
+        /* Style for the buttons */
+        .info-box button {
+            background-color: #F7CDA0;
+            border: 1px solid black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        /* Optional: Hover effect for the buttons */
+        .info-box button:hover {
+            background-color: #ECB171;
+        }
+
+        /* Navigation Bar Logo */
+        .navbar-logo {
+            margin-left: -10px;
+            cursor: pointer;
+            z-index:2
+        }
+
+        /* Text Below Rectangle */
+        .cta-text {
+            color: black;
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .cta-text span {
+            font-size: 24px;
+            font-weight: bold;
+            color: #34145C;
+            display: block;
+        }
+
+        /* Enhancing Button */
+        .cta-button {
+            background-color: #F7CDA0;
+            color: black;
+            font-size: 16px;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 220px;
+            height: 53px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background-color: #ECB171;
+        }
+
+    /* Common navigation button styles */
+    .nav-button {
+    background-color: transparent;
+    border: none; /* Remove border for all nav buttons */
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
+    z-index:2
+    }
+
+    .nav-button:hover {
+        background-color: #ececec; /* Subtle hover effect for white buttons */
+        z-index:2
+    }
+
+    /* Specific styles for Sign In and Register buttons */
+    .nav-button-signin {
+        background-color: #F2F2F7;
+        border: 1px solid black; /* Keep a border for these */
+    }
+
+    .nav-button-signin:hover {
+        background-color: #d9d9e7;
+        z-index:2
+    }
+
+    .nav-button-register {
+        background-color: #F7CDA0;
+        border: 1px solid black; /* Keep a border for these */
+        z-index:2
+    }
+
+    .nav-button-register:hover {
+        background-color: #ECB171;
+        z-index:2
+    }
+
+    * {
+    box-sizing: border-box;
+}
+
+    </style>
+</head>
+<body style="margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; overflow-y: scroll;">
+    <!-- Navigation Bar -->
+    <div style="background-color: white; padding: 10px; position: relative; height: 70px; z-index: 2; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1440px; margin: 0 auto; height: 100%;">
+            <!-- Logo (Now as a Button) -->
+            <a href="/" class="navbar-logo">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
+            </a>
+    
+            <!-- Navigation Buttons -->
+            <div style="display: flex; gap: 15px; margin-right: 10px; z-index:2">
+                <button onclick="location.href='/pricing-coming-soon'" class="nav-button">Pricing</button>
+                <button onclick="location.href='/resources-coming-soon'" class="nav-button">Resources</button>
+                <button onclick="location.href='/contact-coming-soon'" class="nav-button">Contact</button>
+                <button onclick="location.href='/features'" class="nav-button">Features</button>
+                <button onclick="location.href='/about'" class="nav-button">About</button>
+                <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
+                <button onclick="location.href='/registration'" class="nav-button nav-button-register">Register</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Rectangle -->
+    <div style="background-color: #F6F5FF; height: 498px; width: 100%; position: relative; z-index: 1">
+        <div style="max-width: 1440px; margin: 0 auto; height: 100%; display: flex; align-items: center; position: relative;">
+            <!-- Left Content -->
+            <div style="width: 50%; display: flex; flex-direction: column; justify-content: center; padding: 40px;">
+                <h1 style="color: #34145C; font-size: 40px; margin: 0; line-height: 1.2;">
+                    The easiest way to balance your <br> 
+                    life while excelling in school
+                </h1>
+                <p style="color: black; font-size: 16px; margin: 24px 0; line-height: 1.5;">
+                    Your all-in-one productivity tool, designed to help you stay on top of <br>
+                    assignments, manage your personal schedule, and access valuable <br>
+                    resources—all in one place!
+                </p>
+                <button onclick="location.href='/registration'" class="cta-button">Sign up for free</button>
+            </div>
+
+            <!-- Image -->
+            <img src="/images/CUSlogo.png" alt="CUSlogo" style="width: 620px; height: 400px; position: absolute; top: 45px; right: 0px;">
+        </div>
+    </div>
+
+    <!-- Text Below Rectangle -->
+    <div style="background-color: white; padding: 40px 20px; height: 45px; width: 100%; text-align: center;">
+        <p class="cta-text">
+            Whether you're managing a busy schedule or balancing multiple assignments,<br>
+            CollegeUnify is here to help you stay organized, reduce stress, and maximize your academic potential. <br>
+            <span> Start organizing your semester today! </span>
+        </p>
+    </div>
+
+    <div style="background-color: #F6F5FF; height: 450px; width: 100%; position: relative;">
+        <!-- New Section: Group of 3 Texts with Individual Boxes -->
+        <div style="display: flex; justify-content: space-between; max-width: 1440px; margin: 100px auto; padding: 0 10px; padding-top: 20px;">
+            <!-- First Item -->
+            <div class="info-box">
+                <h2 style="color: #B484E4; font-size: 24px;">Track Your Assignments and Appointments</h2>
+                <p style="color: black; font-size: 16px; line-height: 1.5;">
+                    Easily input your homework, projects, personal appointments, and exam dates, and get personalized reminders to keep you on track. Never miss a deadline again!
+                </p>
+                <button>Learn More</button>
+            </div>
+
+            <!-- Second Item -->
+            <div class="info-box">
+                <h2 style="color: #B484E4; font-size: 24px; padding-top: 15px;">Smart Scheduling</h2>
+                <p style="color: black; font-size: 16px; line-height: 1.5; padding-top: 12px">
+                    Our automatic study schedule adapts to your unique routine. Simply add your class times, personal schedule, and assignments with set priority levels, and we’ll create a study plan that fits your life.
+                </p>
+                <button>Learn More</button>
+            </div>
+
+            <!-- Third Item -->
+            <div class="info-box">
+                <h2 style="color: #B484E4; font-size: 24px;">Campus Resources at Your Fingertips (Coming Soon!)</h2>
+                <p style="color: black; font-size: 16px; line-height: 1.5;">
+                    Find and book study rooms, view tutoring schedules, and access other institution-specific resources directly from the app. Everything you need to succeed is just a tap away.
+                </p>
+                <button>Learn More</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Detect when elements come into view
+        window.addEventListener('scroll', function() {
+            const infoBoxes = document.querySelectorAll('.info-box');
+            const windowHeight = window.innerHeight;
+            const scrollY = window.scrollY;
+
+            infoBoxes.forEach(function(box) {
+                const boxTop = box.getBoundingClientRect().top + scrollY;
+                if (boxTop < windowHeight + scrollY - 100) {
+                    box.classList.add('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

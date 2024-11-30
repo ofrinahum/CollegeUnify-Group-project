@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | CollegeUnify</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #F6F5FF;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 50px;
+            z-index: 2;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1440px;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .navbar-logo {
+            margin-left: -10px;
+            cursor: pointer;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-right: 10px;
+        }
+
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #ececec;
+        }
+
+        .nav-button-signin {
+            background-color: #F2F2F7;
+            border: 1px solid black;
+        }
+
+        .nav-button-signin:hover {
+            background-color: #d9d9e7;
+        }
+
+        .nav-button-register {
+            background-color: #F7CDA0;
+            border: 1px solid black;
+        }
+
+        .nav-button-register:hover {
+            background-color: #ECB171;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .features-section h1 {
+            font-size: 32px;
+            color: #543080;
+            margin-bottom: 40px;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            width: 100%;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+        }
+
+        .feature-card h2 {
+            font-size: 22px;
+            color: #543080;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-logo">
+                <img src="/images/CULogo.png" alt="Logo" style="width: 55px; height: 50px;">
+            </a>
+            <div class="nav-buttons">
+                <button onclick="location.href='/pricing-coming-soon'" class="nav-button">Pricing</button>
+                <button onclick="location.href='/resources-coming-soon'" class="nav-button">Resources</button>
+                <button onclick="location.href='/contact-coming-soon'" class="nav-button">Contact</button>
+                <button onclick="location.href='/features'" class="nav-button">Features</button>
+                <button onclick="location.href='/about'" class="nav-button">About</button>
+                <button onclick="location.href='/login'" class="nav-button nav-button-signin">Sign In</button>
+                <button onclick="location.href='/registration'" class="nav-button nav-button-register">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <h1>Explore Our Features</h1>
+        <div class="features-list">
+            <div class="feature-card">
+                <h2>Task Management</h2>
+                <p>Input, edit, delete, and complete tasks effortlessly. Your tasks will display beautifully on your schedule, helping you stay organized.</p>
+            </div>
+            <div class="feature-card">
+                <h2>Smart Scheduling</h2>
+                <p>Let CollegeUnify generate a study schedule for you based on task priority, ensuring you stay on top of deadlines and commitments.</p>
+            </div>
+            <div class="feature-card">
+                <h2>Campus Resources</h2>
+                <p>Coming Soon! We aim to partner with institutions to let you book study rooms and tutoring services with ease.</p>
+            </div>
+            <div class="feature-card">
+                <h2>Group Chats</h2>
+                <p>Collaborate with classmates effortlessly. Share ideas, resources, and updates within your study groups.</p>
+            </div>
+            <div class="feature-card">
+                <h2>Data Analytics</h2>
+                <p>Track your studying efficiency and gain insights. Adjust your schedule based on what works best for you.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
