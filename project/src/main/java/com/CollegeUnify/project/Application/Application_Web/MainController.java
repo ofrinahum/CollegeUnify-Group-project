@@ -59,4 +59,9 @@ public class MainController {
     public String myResources(){
         return "coming_soon_auth";
     }
+
+    @RequestMapping("/settings-coming-soon")
+    public String settings(){
+        return "coming_soon_auth";
+    }
 }
